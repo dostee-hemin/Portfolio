@@ -11,7 +11,7 @@ let colors = [];
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  profileImage = loadImage("/assets/images/Profile Aug 26 2023 - Square.jpg");
+  profileImage = loadImage("./assets/images/Profile Aug 26 2023 - Square.jpg");
   for(let i=0; i<numberOfDots; i++) {
     types.push(int(random(5)));
   }
