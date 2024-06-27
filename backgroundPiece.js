@@ -1,0 +1,92 @@
+class BackgroundPiece {
+    constructor() {
+        this.angle;
+        this.distanceFromCenter;
+        this.location = createVector();
+
+        // Choose a random Tetris piece and give it a random rotation
+        this.pieceType = int(random(7));
+        this.rotation = int(random(4)) * QUARTER_PI;
+
+        // The target size the piece wants to be and the current size the piece is (used for making smooth growing animations)
+        this.targetScale = 1;
+        this.currentScale = 0;
+        
+        // Pick a standard color for all pieces and assign it to the current stroke color
+        this.baseColor = color(0,100,255);
+        this.strokeColor = this.baseColor;
+    }
+
+    // Sets the values related to how the piece is shown in the pattern,
+    // such as the position, rotation, and distance from the center of the screen
+    setPatternPosition(x,y,angle,distanceFromCenter) {
+        this.location.set(x,y);
+        this.angle = angle;
+        this.distanceFromCenter = distanceFromCenter;
+    }
+
+    display() {
+        // Translate and rotate to the appropriate location
+        push();
+        translate(this.location.x,this.location.y);
+        scale(this.currentScale);
+        rotate(this.angle + this.rotation);
+        
+        // Based on the distance to the mouse (value from 0-1), highlight the piece with size and color
+        let closeness = this.getClosenessProportion();
+        if (closeness > 0) {
+            let assignedColor = colors[this.pieceType];
+            let colorDifferences = [
+                red(assignedColor)-red(this.baseColor),
+                green(assignedColor)-green(this.baseColor),
+                blue(assignedColor)-blue(this.baseColor)
+            ];
+            let fadedColor = color(
+                red(this.baseColor)+colorDifferences[0]*closeness,
+                green(this.baseColor)+colorDifferences[1]*closeness,
+                blue(this.baseColor)+colorDifferences[2]*closeness,
+            );
+            this.strokeColor = fadedColor;
+            strokeWeight(1+closeness);
+            scale(1+closeness/3);
+        } else {
+            this.strokeColor = this.baseColor;
+            strokeWeight(1);
+        }
+
+        // Display the piece according to which type it is
+        noFill();
+        stroke(this.strokeColor);
+        beginShape();
+        let currentVerticies = pieceVertices[this.pieceType];
+        for(let vertexIndex = 0; vertexIndex < currentVerticies.length; vertexIndex ++) {
+            let x = currentVerticies[vertexIndex][0] * pieceBaseLength;
+            let y = currentVerticies[vertexIndex][1] * pieceBaseLength;
+            vertex(x,y);
+        }
+        endShape(CLOSE);
+        pop();
+    }
+
+    // Update the display values over time
+    update() {
+        this.targetScale = map(this.distanceFromCenter,0,max(width,height)/2,0,0.5)+0.5;
+        this.currentScale = lerp(this.currentScale, this.targetScale, 0.04);
+    }
+
+    // Returns a floating point value that represents how close the piece is to the mouse
+    // (1 = right under the mouse, 0 = on the edge of the highlight zone, <0 = too far from mouse)
+    getClosenessProportion() {
+        // If the piece is too far away to be considered, leave the function
+        if(max(abs(this.location.x-mouseX),abs(this.location.y-mouseY)) > highlightRadius) return -1;
+
+        let distanceToMouse = this.getDistanceSquared(mouseX,mouseY,this.location.x,this.location.y);
+        return 1-distanceToMouse/(highlightRadius*highlightRadius);
+    }
+
+    // Returns the distance between two points squared
+    // (faster than dist() function because you don't use the square root operation)
+    getDistanceSquared(x1,y1, x2,y2) {
+        return (x2 - x1) ** 2 + (y2 - y1) ** 2;
+    }
+}
