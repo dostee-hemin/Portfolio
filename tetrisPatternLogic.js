@@ -6,6 +6,7 @@ let targetPatternRadius = 32.1;         // The target scale we want to reach for
 let targetDeltaAngle = 137.5;           // The target angle difference we want to reach for the pattern
 
 let backgroundPieces = [];              // The list containing all Tetris pieces of the pattern
+let ripples = []                        // The list containing all ripple animation objects
 let patternRadius = 0;                  // A variable that acts as a scaling factor
 let deltaAngle = 137;                   // The angle difference between each successive piece in the pattern
 let colors = [];                        // The list of colors corresponding to each piece type
@@ -43,6 +44,20 @@ function drawTetrisPattern() {
     patternRadius = lerp(patternRadius, targetPatternRadius, 0.01);
     deltaAngle = lerp(deltaAngle, targetDeltaAngle, 0.01);
     
+    // Loop through all the ripples and update them
+    for(let i=ripples.length-1; i>=0; i--) {
+        let ripple = ripples[i];
+        
+        // Grow the ripple and twist any new pieces it surrounds
+        ripple.update();
+        for(let j=0; j<numberOfBackgroundPieces; j++) {
+            let piece = backgroundPieces[j];
+            if(ripple.surrounds(piece.location)) piece.twist();
+        }
+
+        // Once the ripple is too big, remove it from the list
+        if(ripple.isFinished()) ripples.splice(i,1);
+    }
     // Loop through all background pieces to update and display them
     for(let i=0; i<numberOfBackgroundPieces; i++) {
       let distanceFromCenter = patternRadius * sqrt(i);       //Calculate the radius using the equation
@@ -57,4 +72,10 @@ function drawTetrisPattern() {
       backgroundPieces[i].update();
       backgroundPieces[i].display();
     }
+}
+
+// Function called once every time the mouse is pressed
+function mousePressed() {
+    // Start a new ripple animation at the cursor's current location
+    ripples.push(new Ripple(mouseX,mouseY));
 }

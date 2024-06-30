@@ -6,11 +6,13 @@ class BackgroundPiece {
 
         // Choose a random Tetris piece and give it a random rotation
         this.pieceType = int(random(7));
-        this.rotation = int(random(4)) * QUARTER_PI;
+        this.targetRotation = int(random(4)) * HALF_PI;
+        this.rotation = this.targetRotation
 
         // The target size the piece wants to be and the current size the piece is (used for making smooth growing animations)
         this.targetScale = 1;
         this.currentScale = 0;
+        this.twistScale = 0;
         
         // Pick a standard color for all pieces and assign it to the current stroke color
         this.baseColor = color(0,100,255);
@@ -29,7 +31,7 @@ class BackgroundPiece {
         // Translate and rotate to the appropriate location
         push();
         translate(this.location.x,this.location.y);
-        scale(this.currentScale);
+        scale(this.currentScale + this.twistScale);
         rotate(this.angle + this.rotation);
         
         // Based on the distance to the mouse (value from 0-1), highlight the piece with size and color
@@ -72,6 +74,8 @@ class BackgroundPiece {
     update() {
         this.targetScale = map(this.distanceFromCenter,0,max(width,height)/2,0,0.5)+0.5;
         this.currentScale = lerp(this.currentScale, this.targetScale, 0.04);
+
+        this.rotation = lerp(this.rotation, this.targetRotation, 0.1);
     }
 
     // Returns a floating point value that represents how close the piece is to the mouse
@@ -88,5 +92,17 @@ class BackgroundPiece {
     // (faster than dist() function because you don't use the square root operation)
     getDistanceSquared(x1,y1, x2,y2) {
         return (x2 - x1) ** 2 + (y2 - y1) ** 2;
+    }
+
+    // Function to play a twisting animation whenver this piece gets affected by a ripple object
+    twist() {
+        // Start an animation that increases the scale and rotates the peice then goes back to the original scale
+        p5.tween.manager.addTween(this)
+            .addMotions([
+                { key: 'targetRotation', target: this.targetRotation + (round(random(1))*2-1) * HALF_PI, easing:"easeOutSin" },
+                { key: 'twistScale', target: 0.5, easing:"easeOutSin" }
+            ], 100)
+            .addMotion('twistScale', 0, 100, "easeInSin")
+            .startTween();
     }
 }
