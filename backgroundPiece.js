@@ -15,7 +15,7 @@ class BackgroundPiece {
         this.twistScale = 0;
         
         // Pick a standard color for all pieces and assign it to the current stroke color
-        this.baseColor = color(0,100,255);
+        this.baseColor = color(18, 74, 161);
         this.strokeColor = this.baseColor;
     }
 
@@ -34,26 +34,27 @@ class BackgroundPiece {
         scale(this.currentScale + this.twistScale);
         rotate(this.angle + this.rotation);
         
+        this.strokeColor = this.baseColor;
+        strokeWeight(1);
         // Based on the distance to the mouse (value from 0-1), highlight the piece with size and color
-        let closeness = this.getClosenessProportion();
-        if (closeness > 0) {
-            let assignedColor = colors[this.pieceType];
-            let colorDifferences = [
-                red(assignedColor)-red(this.baseColor),
-                green(assignedColor)-green(this.baseColor),
-                blue(assignedColor)-blue(this.baseColor)
-            ];
-            let fadedColor = color(
-                red(this.baseColor)+colorDifferences[0]*closeness,
-                green(this.baseColor)+colorDifferences[1]*closeness,
-                blue(this.baseColor)+colorDifferences[2]*closeness,
-            );
-            this.strokeColor = fadedColor;
-            strokeWeight(1+closeness);
-            scale(1+closeness/3);
-        } else {
-            this.strokeColor = this.baseColor;
-            strokeWeight(1);
+        if(mouseX != 0 || mouseY != 0) {
+            let closeness = this.getClosenessProportion();
+            if (closeness > 0) {
+                let assignedColor = colors[this.pieceType];
+                let colorDifferences = [
+                    red(assignedColor)-red(this.baseColor),
+                    green(assignedColor)-green(this.baseColor),
+                    blue(assignedColor)-blue(this.baseColor)
+                ];
+                let fadedColor = color(
+                    red(this.baseColor)+colorDifferences[0]*closeness,
+                    green(this.baseColor)+colorDifferences[1]*closeness,
+                    blue(this.baseColor)+colorDifferences[2]*closeness,
+                );
+                this.strokeColor = fadedColor;
+                strokeWeight(1+closeness);
+                scale(1+closeness/3);
+            }
         }
 
         // Display the piece according to which type it is
@@ -99,9 +100,9 @@ class BackgroundPiece {
         // Start an animation that increases the scale and rotates the peice then goes back to the original scale
         p5.tween.manager.addTween(this)
             .addMotions([
-                { key: 'targetRotation', target: this.targetRotation + (round(random(1))*2-1) * HALF_PI, easing:"easeOutSin" },
-                { key: 'twistScale', target: 0.5, easing:"easeOutSin" }
-            ], 100)
+                { key: 'targetRotation', target: this.targetRotation + (round(random(1))*2-1) * HALF_PI},
+                { key: 'twistScale', target: 0.5}
+            ], 100, "easeOutSin")
             .addMotion('twistScale', 0, 100, "easeInSin")
             .startTween();
     }

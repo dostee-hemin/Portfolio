@@ -41,8 +41,8 @@ function setupTetrisPattern() {
 // Function to display the Tetris pattern and animate it
 function drawTetrisPattern() {
     // Grow and rotate the pattern into the desired position
-    patternRadius = lerp(patternRadius, targetPatternRadius, 0.01);
-    deltaAngle = lerp(deltaAngle, targetDeltaAngle, 0.01);
+    patternRadius = animator.targetRadiusAnim
+    deltaAngle = animator.targetDeltaAngleAnim
     
     // Loop through all the ripples and update them
     for(let i=ripples.length-1; i>=0; i--) {
@@ -62,10 +62,14 @@ function drawTetrisPattern() {
     for(let i=0; i<numberOfBackgroundPieces; i++) {
       let distanceFromCenter = patternRadius * sqrt(i);       //Calculate the radius using the equation
       let currentAngle = i * radians(deltaAngle);             //Calculate the angle using the equation
+
+      // Don't show any pieces that would be under the profile image
+      if (distanceFromCenter < animator.profileImageSize/2 && animator.profileImageOffset < 40) continue;
       
       // Calculate the "x" and "y" poition using Polar to Carteasian transformations
       let x = distanceFromCenter * cos(currentAngle) + width/2;
       let y = distanceFromCenter * sin(currentAngle) + height/2;
+
   
       // Assign the values of the current piece and display it to the screen
       backgroundPieces[i].setPatternPosition(x,y,currentAngle,distanceFromCenter);
