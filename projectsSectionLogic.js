@@ -35,6 +35,7 @@ function drawProjectsSection() {
         pop();
 
         // Draw the category name
+        textFont(fontBold);
         fill(255);
         noStroke();
         textSize(40);

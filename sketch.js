@@ -5,7 +5,7 @@ function setup() {
 
   animator = new Animator();
   animator.startUpWebsite();
-  
+
   setupTetrisPattern();
   setupProjectsSection();
 }
@@ -30,9 +30,11 @@ function draw() {
   fill(255, animator.titleTextAlpha);
   textSize(60);
   textAlign(CENTER,CENTER);
+  textFont(fontBold);
   text("Dostee Hemin", width/2, windowHeight/2 + 140 - animator.titleTextOffset);
   fill(200, animator.subtitleTextAlpha);
   textSize(30);
+  textFont(fontRegular);
   text("Software Engineer", width/2, windowHeight/2 + 200 - animator.subtitleTextOffset);
 
   // Projects indicator arrow
