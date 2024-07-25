@@ -56,3 +56,14 @@ function draw() {
 function windowResized() {
   resizeCanvas(windowWidth, height);
 }
+
+// Function called once every time the mouse is pressed
+function mousePressed() {
+  // Start a new ripple animation at the cursor's current location
+  ripples.push(new Ripple(mouseX,mouseY));
+
+  // If the user clicks on a card that's being hovered, move to the link related to that card
+  for(let i=0; i<cards.length; i++) {
+    if(cards[i].isHovering) window.location.href = cards[i].link;
+  }
+}

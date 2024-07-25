@@ -4,7 +4,49 @@
         "projects": [
             {
                 "name":"Kurdish Text-to-Speech",
-                "description":"A custom trained text-to-speech model used in our winning project 'Kurdish Sign Language Convertor' for the 2023 hackasuly Competition.",
+                "description":"A custom trained text to speech model used in our winning project 'Kurdish Sign Language Convertor' for the 2023 hackasuly Competition.",
+                "tools":["Coqui AI", "Google Colab", "Python", "Github"],
+                "link":"https://www.youtube.com",
+                "image_name":"template.png"
+            },
+            {
+                "name":"Book Cover Generator",
+                "description":"A tool to generate a unique book covers for books utilizing large language models (Gemini API) and image generation (Stable Diffusion).",
+                "tools":["Gemini API", "Stable Diffusion"],
+                "link":"https://www.youtube.com",
+                "image_name":"template.png"
+            },
+            {
+                "name":"Kurdish Text-to-Speech",
+                "description":"A custom trained text to speech model used in our winning project 'Kurdish Sign Language Convertor' for the 2023 hackasuly Competition.",
+                "tools":["Coqui AI", "Google Colab", "Python", "Github"],
+                "link":"https://www.youtube.com",
+                "image_name":"template.png"
+            },
+            {
+                "name":"Book Cover Generator",
+                "description":"A tool to generate a unique book covers for books utilizing large language models (Gemini API) and image generation (Stable Diffusion).",
+                "tools":["Gemini API", "Stable Diffusion"],
+                "link":"https://www.youtube.com",
+                "image_name":"template.png"
+            },
+            {
+                "name":"Kurdish Text-to-Speech",
+                "description":"A custom trained text to speech model used in our winning project 'Kurdish Sign Language Convertor' for the 2023 hackasuly Competition.",
+                "tools":["Coqui AI", "Google Colab", "Python", "Github"],
+                "link":"https://www.youtube.com",
+                "image_name":"template.png"
+            },
+            {
+                "name":"Book Cover Generator",
+                "description":"A tool to generate a unique book covers for books utilizing large language models (Gemini API) and image generation (Stable Diffusion).",
+                "tools":["Gemini API", "Stable Diffusion"],
+                "link":"https://www.youtube.com",
+                "image_name":"template.png"
+            },
+            {
+                "name":"Kurdish Text-to-Speech",
+                "description":"A custom trained text to speech model used in our winning project 'Kurdish Sign Language Convertor' for the 2023 hackasuly Competition.",
                 "tools":["Coqui AI", "Google Colab", "Python", "Github"],
                 "link":"https://www.youtube.com",
                 "image_name":"template.png"

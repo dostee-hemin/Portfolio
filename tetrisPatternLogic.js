@@ -77,9 +77,3 @@ function drawTetrisPattern() {
       backgroundPieces[i].display();
     }
 }
-
-// Function called once every time the mouse is pressed
-function mousePressed() {
-    // Start a new ripple animation at the cursor's current location
-    ripples.push(new Ripple(mouseX,mouseY));
-}
