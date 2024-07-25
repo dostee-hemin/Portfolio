@@ -68,7 +68,7 @@ function drawTetrisPattern() {
       
       // Calculate the "x" and "y" poition using Polar to Carteasian transformations
       let x = distanceFromCenter * cos(currentAngle) + width/2;
-      let y = distanceFromCenter * sin(currentAngle) + height/2;
+      let y = distanceFromCenter * sin(currentAngle) + windowHeight/2;
 
   
       // Assign the values of the current piece and display it to the screen
