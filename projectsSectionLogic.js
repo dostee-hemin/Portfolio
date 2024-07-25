@@ -1,22 +1,36 @@
 // Contains the name of each category and the list of projects in each category
-let categories = [
-    {"name": "AI and Machine Learning", "projects": [1]},
-    {"name": "Game Development", "projects": [1]},
-    {"name": "Simulations", "projects": [1]},
-];
+let categories;
 
 // Variables that control how big the category section is drawn
 let triangleHeight = 150;
 let categoryBaseHeight = 400;
 
+let cardWidth = 300;
+let cardHeight = categoryBaseHeight*0.9;
+
+let cards=[];
+
 function setupProjectsSection() {
+    let currentY = windowHeight+triangleHeight;
+    for(let category=0; category<categories.length; category++) {
+        for(let project=0; project<categories[category].projects.length; project++) {
+            let currentProject = categories[category].projects[project]; 
+
+            let x = (project%3 + 0.7) * cardWidth*1.2;
+            if (category%2 != 0) {x = width - x;}
+            let y = currentY+(int(project/3)+0.5) * categoryBaseHeight;
+
+            cards.push(new ProjectCard(x, y, currentProject));
+        }
+        currentY += (int(categories[category].projects.length/3)+1) * categoryBaseHeight + triangleHeight;
+    }
 }
 
 function drawProjectsSection() {
     // Variable that starts at the bottom of the screen and goes lower with each category
     let startingY = windowHeight;
     for(let i=0; i<categories.length; i++) {
-        let categoryHeight = categories[i].projects.length * categoryBaseHeight;
+        let categoryHeight = (int(categories[i].projects.length/3)+1) * categoryBaseHeight;
 
         // Draw the upper and lower triangles, the middle rectangle, and the name underline.
         // Categories alternate between being drawn from the left and from the right 
@@ -43,5 +57,29 @@ function drawProjectsSection() {
         text(categories[i].name,i%2 == 0 ? 60 : width-60,startingY+triangleHeight*0.8);
 
         startingY += categoryHeight+triangleHeight;
+    }
+
+    for(let i=0; i<cards.length; i++) {
+        let card = cards[i];
+
+        card.display();
+    }
+}
+
+class ProjectCard {
+    constructor(x, y, project_info) {
+        this.x = x;
+        this.y = y;
+        this.img = project_info.image;
+        this.name = project_info.name;
+        this.description = project_info.description;
+        this.tools = project_info.tools;
+        this.link = project_info.link;
+    }
+
+    display() {
+        imageMode(CENTER);
+        noTint();
+        image(this.img, this.x, this.y, cardWidth, cardWidth);
     }
 }
