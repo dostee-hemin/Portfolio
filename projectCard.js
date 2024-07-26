@@ -86,10 +86,16 @@ class ProjectCard {
         this.hoverAmnt = lerp(this.hoverAmnt, this.targetHoverAmnt, 0.1);
 
         if(this.isUnderMouse()) {
-            if(!this.isHovering) this.targetHoverAmnt = 1;
+            if(!this.isHovering) {
+                this.targetHoverAmnt = 1;
+                cursor('pointer');
+            }
             this.isHovering = true;
         } else {
-            if(this.isHovering) this.targetHoverAmnt = 0;
+            if(this.isHovering) {
+                this.targetHoverAmnt = 0;
+                cursor(ARROW);
+            }
             this.isHovering = false;
         }
     }
