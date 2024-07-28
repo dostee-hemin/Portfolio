@@ -15,45 +15,41 @@ class ProjectCard {
 
     display() {
         push()
-        translate(this.x, this.y - this.hoverAmnt * 10);
+        translate(this.x, this.y - this.hoverAmnt * 20);
         imageMode(CENTER);
         noTint();
         image(this.img, 0, 0, cardSize, cardSize);
-
+        
+        // Black gradient
+        const canvas = document.getElementById("defaultCanvas0");
+        const ctx = canvas.getContext("2d");
+        let gradient = ctx.createLinearGradient(0,cardSize*(0.2-this.hoverAmnt*0.7),0,cardSize*(0.5001 - this.hoverAmnt));
+        gradient.addColorStop(0, color(0, 0));
+        gradient.addColorStop(1, color(0, 230));
+        ctx.fillStyle = gradient;
         noStroke();
-        for(let i=0; i<=cardSize*0.3; i+=6) {
-            fill(0, i/(cardSize*0.3) * 200);
-            rectMode(CENTER);
-            rect(0,cardSize*(0.2-this.hoverAmnt*0.7)+i-3,cardSize, 6);
-        }
-        noStroke();
-        fill(0, 200);
         rectMode(CORNER);
-        rect(-cardSize/2,cardSize*(0.5 - this.hoverAmnt*0.7),cardSize,cardSize*this.hoverAmnt*0.7);
+        rect(-cardSize/2,cardSize*(0.2-this.hoverAmnt*0.7),cardSize,cardSize*(0.3+ this.hoverAmnt*0.7)+0.5);
 
+        // Name
         fill(255);
         textSize(map(this.name.length,1,20,32,22));
         textAlign(LEFT,CENTER);
         textFont(fontBold);
         text(this.name, cardSize*-0.4, cardSize*(0.37 - this.hoverAmnt*0.7));
 
-        fill(220, map(this.hoverAmnt,0.8,1,0,255));
+        // Description
+        fill(220, map(this.hoverAmnt,0.7,1,0,255));
         textSize(18);
         textAlign(LEFT,TOP);
         textFont(fontRegular);
-        let fittedText = ""
-        let chunk = "";
+        let fittedText = "";
         let words = this.description.split(" ");
         for(let i=0; i<words.length; i++) {
-            if(textWidth(chunk+words[i]) > cardSize*0.8) {
-                fittedText += chunk + "\n";
-                chunk = "";
-            }
-            chunk += words[i] + " ";
-
+            if(textWidth(fittedText + words[i]) > cardSize*0.8) fittedText += "\n";
+            fittedText += words[i] + " ";
         }
-        if(chunk != "") fittedText += chunk;
-        text(fittedText, cardSize*-0.4, cardSize*-0.2);
+        text(fittedText, cardSize*-0.4, cardSize*-0.25);
 
         let toolX = cardSize*-0.4+10;
         let toolY = cardSize*0.3;
@@ -68,12 +64,12 @@ class ProjectCard {
                 toolY += textAscent(tool)*2;
             }
 
-            stroke(130,map(this.hoverAmnt,0.2,1,0,255));
+            stroke(130,map(this.hoverAmnt,0.7,1,0,255));
             strokeWeight(20);
             line(toolX,toolY,toolX+textWidth(tool),toolY);
             
             noStroke();
-            fill(255,map(this.hoverAmnt,0.2,1,0,255));
+            fill(255,map(this.hoverAmnt,0.7,1,0,255));
             text(tool,toolX,toolY-2);
 
 
