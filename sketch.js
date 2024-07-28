@@ -1,13 +1,15 @@
 let animator;
+let lowestYCoordinate = 0;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight*4);
+  createCanvas(windowWidth, windowHeight);
 
   animator = new Animator();
   animator.startUpWebsite();
 
   setupTetrisPattern();
   setupProjectsSection();
+  windowResized();
 }
 
 function draw() {
@@ -54,7 +56,17 @@ function draw() {
 }
 
 function windowResized() {
+  // Change the width of the screen
   resizeCanvas(windowWidth, height);
+
+  // Reset the calculation of where the lowest point on the page is
+  lowestYCoordinate = 0;
+
+  // Setup all parts of the scene again with the new screen dimensions
+  setupProjectsSection();
+
+  // Adjust the height of the website to include the lowest elements on the page
+  resizeCanvas(width, lowestYCoordinate + 100);
 }
 
 // Function called once every time the mouse is pressed

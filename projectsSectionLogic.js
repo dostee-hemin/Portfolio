@@ -3,14 +3,17 @@ let categories;
 
 // Variables that control how big the category section is drawn
 let triangleHeight = 150;
-let categoryBaseHeight = 400;
+let categoryBaseHeight;
 
-let cardSize = 300;
-let numColumns = 4;
+let cardSize = 400;
+let numColumns;
 
 let cards=[];
 
 function setupProjectsSection() {
+    cards = [];
+    categoryBaseHeight = cardSize * 1.3;
+    numColumns = int(width*0.8/cardSize);
     let currentY = windowHeight+triangleHeight;
     for(let category=0; category<categories.length; category++) {
         for(let project=0; project<categories[category].projects.length; project++) {
@@ -24,6 +27,8 @@ function setupProjectsSection() {
         }
         currentY += ceil(categories[category].projects.length/numColumns) * categoryBaseHeight + triangleHeight;
     }
+
+    lowestYCoordinate = currentY;
 }
 
 function drawProjectsSection() {
