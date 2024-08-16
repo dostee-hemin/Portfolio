@@ -10,6 +10,7 @@ function setup() {
   setupTetrisPattern();
   setupProjectsSection();
   windowResized();
+  setupSocialLinks();
 }
 
 function draw() {
@@ -53,6 +54,22 @@ function draw() {
   textSize(20);
   text("Check Out Projects", 0, -50);
   pop();
+
+  fill(255);
+  textAlign(CENTER,CENTER);
+  textSize(50);
+  textFont(fontBold);
+  text("Contact Me", width/2, height-socialsJSON.length*60-180);
+  textFont(fontRegular);
+  textSize(22);
+  text("No matter if it's about tech, games, or movies, let's start a chat!\nCheck out my socials below if you want to get in touch.", width/2, height-socialsJSON.length*60-100);
+  
+  for(let i=0; i<socialLinks.length; i++) {
+    let s = socialLinks[i];
+
+    s.display();
+    s.update();
+  }
 }
 
 function windowResized() {
@@ -66,7 +83,9 @@ function windowResized() {
   setupProjectsSection();
 
   // Adjust the height of the website to include the lowest elements on the page
-  resizeCanvas(width, lowestYCoordinate + 100);
+  resizeCanvas(width, lowestYCoordinate + 230 + socialsJSON.length*60);
+
+  setupSocialLinks();
 }
 
 // Function called once every time the mouse is pressed
@@ -74,8 +93,13 @@ function mousePressed() {
   // Start a new ripple animation at the cursor's current location
   ripples.push(new Ripple(mouseX,mouseY));
 
+  if(mouseButton != LEFT) return;
   // If the user clicks on a card that's being hovered, move to the link related to that card
   for(let i=0; i<cards.length; i++) {
-    if(cards[i].isHovering) window.location.href = cards[i].link;
+    if(cards[i].isUnderMouse()) window.location.href = cards[i].link;
+  }
+
+  for(let i=0; i<socialLinks.length; i++) {
+    if(socialLinks[i].isUnderMouse()) window.location.href = socialLinks[i].link;
   }
 }

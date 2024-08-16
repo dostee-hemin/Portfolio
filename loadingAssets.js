@@ -18,4 +18,8 @@ function preload() {
             }
         }
     });
+
+    loadJSON("./assets/data/socials.json", function(loadedData) {
+        socialsJSON = Object.values(loadedData);
+    });
 }
