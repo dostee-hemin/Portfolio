@@ -46,7 +46,7 @@ class ProjectCard {
         let fittedText = "";
         let words = this.description.split(" ");
         for(let i=0; i<words.length; i++) {
-            if(textWidth(fittedText + words[i]) > cardSize*0.8) fittedText += "\n";
+            if(textWidth(fittedText + words[i] + " ") > cardSize*0.8) fittedText += "\n";
             fittedText += words[i] + " ";
         }
         text(fittedText, cardSize*-0.4, cardSize*-0.25);

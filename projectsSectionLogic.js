@@ -5,7 +5,7 @@ let categories;
 let triangleHeight = 150;
 let categoryBaseHeight;
 
-let cardSize = 400;
+let cardSize = 350;
 let numColumns;
 
 let cards=[];
@@ -34,6 +34,7 @@ function setupProjectsSection() {
 function drawProjectsSection() {
     // Variable that starts at the bottom of the screen and goes lower with each category
     let startingY = windowHeight;
+    let gradientHeight = triangleHeight;
     for(let i=0; i<categories.length; i++) {
         let categoryHeight = ceil(categories[i].projects.length/numColumns) * categoryBaseHeight;
 
@@ -51,6 +52,18 @@ function drawProjectsSection() {
         stroke(200);
         strokeWeight(3);
         line(60,triangleHeight,60+categories[i].name.length * 24,triangleHeight);
+        translate(width/2,triangleHeight/2-gradientHeight/2);
+        // Black gradient
+        const canvas = document.getElementById("defaultCanvas0");
+        const ctx = canvas.getContext("2d");
+        let gradient = ctx.createLinearGradient(0,0,0,gradientHeight);
+        gradient.addColorStop(0, color(0, 0));
+        gradient.addColorStop(1, color(0, 230));
+        ctx.fillStyle = gradient;
+        noStroke();
+        rectMode(CENTER);
+        rotate(atan(triangleHeight/width));
+        rect(0,0,width+100,gradientHeight);
         pop();
 
         // Draw the category name
