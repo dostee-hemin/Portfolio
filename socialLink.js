@@ -57,6 +57,6 @@ class SocialLink {
     }
 
     isUnderMouse() {
-        return mouseX > this.x-20 && mouseX < this.x+40+textWidth(this.linkText) && mouseY > this.y-20 && mouseY < this.y+20;
+        return mousePos.x > this.x-20 && mousePos.x < this.x+40+textWidth(this.linkText) && mousePos.y > this.y-20 && mousePos.y < this.y+20;
     }
 }

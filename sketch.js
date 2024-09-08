@@ -1,6 +1,10 @@
 let animator;
 let lowestYCoordinate = 0;
 
+let mousePos = {"x":0,"y":0};
+let prevMousePos = {"x":0,"y":0};
+let prevScrollY;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
@@ -70,6 +74,12 @@ function draw() {
     s.display();
     s.update();
   }
+
+  if(prevMousePos.x != mouseX && prevMousePos.y != mouseY) mousePos = {"x": mouseX, "y": mouseY}
+  else mousePos.y += window.scrollY-prevScrollY;
+  prevScrollY = window.scrollY;
+  prevMousePos.x = mouseX;
+  prevMousePos.y = mouseY;
 }
 
 function windowResized() {
@@ -91,7 +101,7 @@ function windowResized() {
 // Function called once every time the mouse is pressed
 function mousePressed() {
   // Start a new ripple animation at the cursor's current location
-  ripples.push(new Ripple(mouseX,mouseY));
+  ripples.push(new Ripple(mousePos.x,mousePos.y));
 
   if(mouseButton != LEFT) return;
   // If the user clicks on a card that's being hovered, move to the link related to that card
