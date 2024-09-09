@@ -37,7 +37,7 @@ class BackgroundPiece {
         this.strokeColor = this.baseColor;
         strokeWeight(1);
         // Based on the distance to the mouse (value from 0-1), highlight the piece with size and color
-        if(mousePos.x != 0 || mousePos.y != 0) {
+        if(mousePos.x != 0 || mousePos.y-window.scrollY/2 != 0) {
             let closeness = this.getClosenessProportion();
             if (closeness > 0) {
                 let assignedColor = colors[this.pieceType];
@@ -83,9 +83,9 @@ class BackgroundPiece {
     // (1 = right under the mouse, 0 = on the edge of the highlight zone, <0 = too far from mouse)
     getClosenessProportion() {
         // If the piece is too far away to be considered, leave the function
-        if(max(abs(this.location.x-mousePos.x),abs(this.location.y-mousePos.y)) > highlightRadius) return -1;
+        if(max(abs(this.location.x-mousePos.x),abs(this.location.y-mousePos.y+window.scrollY/2)) > highlightRadius) return -1;
 
-        let distanceToMouse = this.getDistanceSquared(mousePos.x,mousePos.y,this.location.x,this.location.y);
+        let distanceToMouse = this.getDistanceSquared(mousePos.x,mousePos.y-window.scrollY/2,this.location.x,this.location.y);
         return 1-distanceToMouse/(highlightRadius*highlightRadius);
     }
 

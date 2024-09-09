@@ -4,6 +4,8 @@ let lowestYCoordinate = 0;
 let mousePos = {"x":0,"y":0};
 let prevMousePos = {"x":0,"y":0};
 let prevScrollY;
+let prevParallaxPosition = 0;
+let parallaxPosition = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -12,16 +14,18 @@ function setup() {
   animator.startUpWebsite();
 
   setupTetrisPattern();
-  setupProjectsSection();
   windowResized();
-  setupSocialLinks();
 }
 
 function draw() {
-  background(3, 25, 54);
+  background(3, 15, 34);
 
+  parallaxPosition = max(map(window.scrollY,0,windowHeight/1.5,-100,-500),-500);
+  parallaxOffset = parallaxPosition - prevParallaxPosition;
+
+  push();
+  translate(0,window.scrollY/2);
   drawTetrisPattern();
-  drawProjectsSection();
 
   // Profile image and outline
   imageMode(CENTER);
@@ -53,12 +57,27 @@ function draw() {
   line(-15,15,0,30);
   line(15,15,0,30);
 
+  
   noStroke();
   fill(200, animator.projectsArrowAlpha);
   textSize(20);
   text("Check Out Projects", 0, -50);
   pop();
+  pop();
+  
+  // Black background for socials section
+  rectMode(CORNER);
+  noStroke();
+  fill(10);
+  rect(0,height-socialsJSON.length*60-triangleHeight-230,width,socialsJSON.length*60+triangleHeight+230);
 
+
+  push();
+  translate(0,parallaxPosition);
+  drawProjectsSection();  
+  pop();
+  
+  // Socials title and subtitle
   fill(255);
   textAlign(CENTER,CENTER);
   textSize(50);
@@ -68,18 +87,27 @@ function draw() {
   textSize(22);
   text("No matter if it's about tech, games, or movies, let's start a chat!\nCheck out my socials below if you want to get in touch.", width/2, height-socialsJSON.length*60-100);
   
+  for(let i=0; i<cards.length; i++) {
+    let card = cards[i];
+
+    card.y += parallaxOffset;
+    card.update();
+    card.display();
+}
   for(let i=0; i<socialLinks.length; i++) {
     let s = socialLinks[i];
-
+    
     s.display();
     s.update();
   }
-
+  
+  
   if(prevMousePos.x != mouseX && prevMousePos.y != mouseY) mousePos = {"x": mouseX, "y": mouseY}
   else mousePos.y += window.scrollY-prevScrollY;
   prevScrollY = window.scrollY;
   prevMousePos.x = mouseX;
   prevMousePos.y = mouseY;
+  prevParallaxPosition = parallaxPosition;
 }
 
 function windowResized() {
@@ -91,10 +119,10 @@ function windowResized() {
 
   // Setup all parts of the scene again with the new screen dimensions
   setupProjectsSection();
-
+  
   // Adjust the height of the website to include the lowest elements on the page
   resizeCanvas(width, lowestYCoordinate + 230 + socialsJSON.length*60);
-
+  
   setupSocialLinks();
 }
 
