@@ -21,6 +21,8 @@ class Animator {
         // Variables related to the opacity and motion of the indicator to scroll downwards to see projects
         this.projectsArrowAlpha = 0;
         this.projectsArrowOffset = 0;
+
+        this.fractalAngle = PI;
     }
 
     // These animations are called once when the website loads up
@@ -64,5 +66,17 @@ class Animator {
                 { key: 'projectsArrowOffset', target: 50}
             ], 700, "easeInOutQuad")
             .startTween();
+    }
+
+    showFractal() {
+        p5.tween.manager.addTween(this)
+        .addMotion('fractalAngle', PI/8, 3000, "easeOutQuad")
+        .startTween();
+    }
+
+    hideFractal() {
+        p5.tween.manager.addTween(this)
+        .addMotion('fractalAngle', PI, 3000, "easeInOutCubic")
+        .startTween();
     }
 }

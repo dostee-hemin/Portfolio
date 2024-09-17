@@ -22,4 +22,8 @@ function preload() {
     loadJSON("./assets/data/socials.json", function(loadedData) {
         socialsJSON = Object.values(loadedData);
     });
+
+    loadJSON("./assets/data/experience.json", function(loadedData) {
+        experiencesJSON = Object.values(loadedData);
+    });
 }

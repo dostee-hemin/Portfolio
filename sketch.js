@@ -71,6 +71,14 @@ function draw() {
   fill(10);
   rect(0,height-socialsJSON.length*60-triangleHeight-230,width,socialsJSON.length*60+triangleHeight+230);
 
+  const canvas = document.getElementById("defaultCanvas0");
+  const ctx = canvas.getContext("2d");
+  let gradient = ctx.createLinearGradient(0,height-socialsJSON.length*60-triangleHeight-230-triangleHeight-experiencesJSON.length*700,width,height-socialsJSON.length*60-triangleHeight-230);
+  gradient.addColorStop(0, color(30));
+  gradient.addColorStop(1, color(0,5,10));
+  ctx.fillStyle = gradient;
+  rect(0,height-socialsJSON.length*60-triangleHeight-230-triangleHeight-experiencesJSON.length*700,width,triangleHeight+experiencesJSON.length*700)
+
 
   push();
   translate(0,parallaxPosition);
@@ -101,6 +109,7 @@ function draw() {
     s.update();
   }
   
+  drawExperienceTree();
   
   if(prevMousePos.x != mouseX && prevMousePos.y != mouseY) mousePos = {"x": mouseX, "y": mouseY}
   else mousePos.y += window.scrollY-prevScrollY;
@@ -119,6 +128,7 @@ function windowResized() {
 
   // Setup all parts of the scene again with the new screen dimensions
   setupProjectsSection();
+  setupExperienceTree();
   
   // Adjust the height of the website to include the lowest elements on the page
   resizeCanvas(width, lowestYCoordinate + 230 + socialsJSON.length*60);
