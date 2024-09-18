@@ -6,6 +6,7 @@ let prevMousePos = {"x":0,"y":0};
 let prevScrollY;
 let prevParallaxPosition = 0;
 let parallaxPosition = 0;
+let frameRates = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -117,6 +118,17 @@ function draw() {
   prevMousePos.x = mouseX;
   prevMousePos.y = mouseY;
   prevParallaxPosition = parallaxPosition;
+
+  frameRates.push(frameRate())
+    if (frameRates.length > 100) {
+        frameRates.shift();
+    }
+    let avgFrameRate = 0;
+    for(let f=0; f<frameRates.length; f++) {
+        avgFrameRate += frameRates[f];
+    }
+    avgFrameRate /= frameRates.length;
+    console.log(round(avgFrameRate));
 }
 
 function windowResized() {
@@ -128,12 +140,14 @@ function windowResized() {
 
   // Setup all parts of the scene again with the new screen dimensions
   setupProjectsSection();
-  setupExperienceTree();
+
+  lowestYCoordinate += experiencesJSON.length*700+triangleHeight;
   
   // Adjust the height of the website to include the lowest elements on the page
   resizeCanvas(width, lowestYCoordinate + 230 + socialsJSON.length*60);
   
   setupSocialLinks();
+  setupExperienceTree();
 }
 
 // Function called once every time the mouse is pressed
