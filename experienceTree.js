@@ -9,9 +9,9 @@ function setupExperienceTree() {
     for(let i=0; i<experiencesJSON.length; i++) {
         let visibility = 0;
         let x = width/2;
-        let y = topMostY+i*400+1200;
+        let y = topMostY+i*450+1200;
         if(i != 0) {
-            y+=200;
+            y+=400;
             visibility = (i%2 == 0)?-1:1;
         }
         experiences.push(new Experience(x,y,visibility,experiencesJSON[i]));
@@ -21,7 +21,10 @@ function setupExperienceTree() {
 }
 
 function drawExperienceTree() {
-    for(let i=0; i<experiences.length; i++) experiences[i].drawBranches();
+    for(let i=0; i<experiences.length; i++) {
+        experiences[i].update();
+        experiences[i].drawBranches();
+    }
 
     // Draw the tree trunk at increasing thicknesses as you go down
     stroke(255);
@@ -42,8 +45,11 @@ class Experience {
         this.fractalAngle = this.startingAngle;
         this.targetAngle = PI/8;
         this.isAnimating = false;
+        this.isHovering = false;
         this.branchLength = 100;
         this.info = info
+        this.targetAnimationAmount = 0;
+        this.animationAmount = this.targetAnimationAmount;
     }
 
     drawBranches() {
@@ -95,7 +101,125 @@ class Experience {
             strokeWeight(Math.abs(leaf[0])/40+3);
             point(leaf[0],leaf[1]);
         }
+
+        // Draw all the text information
+        let textX = this.visibility * 50;
+        let textAlignment = CENTER;
+        if (this.visibility != 0) textAlignment = this.visibility == 1 ? LEFT : RIGHT ; 
+        let animationRatio = max(map(this.fractalAngle,this.startingAngle,this.targetAngle,-0.5,1),0);
+        translate(0,-900);
+        // Title
+        fill(255, animationRatio*255);
+        noStroke();
+        textSize(60);
+        textFont(fontBold);
+        textAlign(textAlignment,CENTER);
+        text(this.info['title'], textX, (1-animationRatio)*50);
+        // Place
+        textFont(fontRegular);
+        textSize(35);
+        fill(255-this.animationAmount*100,255-this.animationAmount*100,255, max(animationRatio*1.2-0.2,0)*255);
+        text(this.info['place'], textX, 60+((1-max(animationRatio*1.2-0.2,0))*50));
+        // Duration
+        textFont(fontItalic);
+        textSize(20);
+        fill(255, max(animationRatio*1.2-0.2,0)*255);
+        let workingTime = this.info['start_date'] + ' - ' + this.info['end_date'];
+        text(workingTime, textX, 110+((1-max(animationRatio*1.2-0.2,0))*50));
+        
+        // Description
+        textAlign(textAlignment,TOP);
+        textFont(fontRegular);
+        textSize(25);
+        fill(255, max(animationRatio*2.5-1.5,0)*255);
+
+        let paragraphedDescription = ""
+        let words = this.info['description'].split(" ");
+        for(let i=0; i<words.length; i++) {
+            if(textWidth(paragraphedDescription + words[i] + " ") > 800) paragraphedDescription += "\n";
+            paragraphedDescription += words[i] + " ";
+        }
+        text(paragraphedDescription, textX, 150+((1-max(animationRatio*2.5-1.5,0))*50));
+
+        let tagRows = [[]];
+        let tagX = 0;
+        translate(0,(1-max(animationRatio*3-2,0))*50);
+        textSize(18);
+        textAlign(LEFT,CENTER);
+        textFont(fontBold);
+        for(let i=0; i<this.info['tags'].length; i++) {
+            let tag = this.info['tags'][i];
+
+            if(tagX+textWidth(tag) > width*0.4) {
+                tagX = 0;
+                tagRows.push([]);
+            }
+
+            tagRows[tagRows.length-1].push(tag)
+            tagX += textWidth(tag) + 40;
+        }
+        let tagY = 270;
+        for(let row=0; row<tagRows.length; row++) {
+            let totalWidth = 0;
+            for (let i=0; i<tagRows[row].length; i++) {
+                if(i!=0) totalWidth += 40
+                totalWidth += textWidth(tagRows[row][i]);
+            }
+            let tagX = -totalWidth/2;
+            if (this.visibility == 1) tagX = 60;
+            else if (this.visibility == -1) tagX = -totalWidth-60;
+            for(let i=0; i<tagRows[row].length; i++) {
+                let tag = tagRows[row][i];
+
+                stroke(this.info["color_red"],this.info["color_green"],this.info["color_blue"],map(animationRatio,0.7,1,0,255));
+                strokeWeight(28);
+                line(tagX,tagY,tagX+textWidth(tag),tagY);
+                
+                noStroke();
+                fill(255,map(animationRatio,0.7,1,0,255));
+                text(tag,tagX,tagY-2);
+    
+                tagX += textWidth(tag) + 40;
+            }
+
+            tagY += 40;
+        }
         pop();
+    }
+
+    update() {
+        this.animationAmount = lerp(this.animationAmount, this.targetAnimationAmount, 0.3);
+        if(this.isUnderMouse()) {
+            if(!this.isHovering) {
+                this.targetAnimationAmount = 1;
+                cursor('pointer');
+            }
+            this.isHovering = true;
+        } else {
+            if(this.isHovering) {
+                this.targetAnimationAmount = 0;
+                cursor(ARROW);
+            }
+            this.isHovering = false;
+        }
+    }
+
+    isUnderMouse() {
+        if(this.fractalAngle == this.startingAngle) return false;
+
+        textFont(fontRegular);
+        textSize(35);
+        let placeTextWidth = textWidth(this.info['place'])
+        let minX = this.x-placeTextWidth/2;
+        let maxX = this.x+placeTextWidth/2;
+        if(this.visibility == 1) {
+            minX = this.x+50;
+            maxX = minX + placeTextWidth;
+        } else if (this.visibility == -1) {
+            maxX = this.x+-50;
+            minX = maxX - placeTextWidth;
+        }
+        return mousePos.x > minX && mousePos.x < maxX && mousePos.y > this.y-870 && mousePos.y < this.y-810;
     }
 
     makeBranch(len, branchAngle, x, y){

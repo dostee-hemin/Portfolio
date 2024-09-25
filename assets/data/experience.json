@@ -4,35 +4,35 @@
         "place": "MEED Foundation",
         "start_date": "Aug 2024",
         "end_date": "Now",
-        "description": "",
-        "tools": [""],
-        "link": "meedfoundation.org"
+        "description": "Developing smart processes for data research, collection, cleaning, analysis, and reporting.",
+        "tags": ["Tableau", "Survey123", "Microsoft Forms", "Jupyter Notebook", "Phrase Clustering with Vector Embeddings"],
+        "color_red": 0,
+        "color_green": 51,
+        "color_blue": 160,
+        "link": "https://meedfoundation.org"
     },
     {
         "title": "Machine Learning Developer",
         "place": "Agora Vision",
         "start_date": "2022",
         "end_date": "2024",
-        "description": "",
-        "tools": [""],
-        "link": "agoravision.site"
+        "description": "Researching and developing AI tools that can be used to improve business operations, create new products, and enrichen Kurdish literature.",
+        "tags": ["Prompt Engineering", "Google Colab", "Designed an AI Translation Workflow", "Developed an AI-Generated Language-Learning Course"],
+        "color_red": 58,
+        "color_green": 132,
+        "color_blue": 179,
+        "link": "https://agoravision.site"
     },
     {
         "title": "Data Science and AI Trainee",
         "place": "Ovanya",
         "start_date": "Feb 2022",
         "end_date": "May 2022",
-        "description": "",
-        "tools": [""],
-        "link": "ovanya.com"
-    },
-    {
-        "title": "Data Analyst",
-        "place": "MEED Foundation",
-        "start_date": "Aug 2024",
-        "end_date": "Now",
-        "description": "",
-        "tools": [""],
-        "link": "meedfoundation.org"
+        "description": "Learning how to utilize the best practices of modern data science and AI in a wide variety of applications.",
+        "tags": ["Neural Network Fundamentals", "LSTMs", "CNNs", "Cluster Analysis", "Forecasting and Prediction", "Google Colab"],
+        "color_red": 52,
+        "color_green": 11,
+        "color_blue": 152,
+        "link": "https://ovanya.com"
     }
 ]

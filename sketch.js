@@ -164,4 +164,8 @@ function mousePressed() {
   for(let i=0; i<socialLinks.length; i++) {
     if(socialLinks[i].isUnderMouse()) window.location.href = socialLinks[i].link;
   }
+
+  for(let i=0; i<experiences.length; i++) {
+    if(experiences[i].isUnderMouse()) window.location.href = experiences[i].info['link'];
+  }
 }

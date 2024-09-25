@@ -1,11 +1,13 @@
 let profileImage;
 let fontBold;
 let fontRegular;
+let fontItalic;
 
 function preload() {
     profileImage = loadImage("./assets/images/Profile Aug 26 2023 - Circle.png");
     fontRegular = loadFont("./assets/fonts/Raleway-Regular.ttf");
     fontBold = loadFont("./assets/fonts/Raleway-Bold.ttf");
+    fontItalic = loadFont("./assets/fonts/Raleway-Italic.ttf");
 
     loadJSON("./assets/data/projects.json", function(loadedData) {
         categories = Object.values(loadedData);
