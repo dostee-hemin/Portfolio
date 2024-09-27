@@ -70,15 +70,18 @@ class Experience {
 
         this.isNewLeaves = true;
         this.leafIndex = 0;
+        this.tween = p5.tween.manager.addTween(this);
     }
 
     drawBranches() {
         // If the tree has not grown yet, we can add new leaves to the list
         if(this.fractalAngle == this.startingAngle) this.isNewLeaves = true
 
+        
+
         // Update and display all leaves regardless of whether or not we can see the branches
         stroke(0,200,50,100)
-        strokeWeight(10);
+        if (this.leaves.length != 0) strokeWeight(this.leaves[0].lifetime * 10);
         for(let i=this.leaves.length-1; i>=0; i--) {
             let leaf = this.leaves[i];
 
@@ -112,14 +115,16 @@ class Experience {
         // Animate the branch to grow into view when the user has scrolled to the right point, and animate it to hide once the user leaves
         if (window.scrollY+windowHeight*0.4 >=  this.y-900) {
             if(!this.isAnimating) {
-                p5.tween.manager.addTween(this)
+                this.tween.pause();
+                this.tween = p5.tween.manager.addTween(this)
                 .addMotion('fractalAngle', this.targetAngle, 3000, "easeOutQuad")
                 .startTween();
             }
             this.isAnimating = true;
         } else {
             if(this.isAnimating) {
-                p5.tween.manager.addTween(this)
+                this.tween.pause();
+                this.tween = p5.tween.manager.addTween(this)
                 .addMotion('fractalAngle', this.startingAngle, 1500-abs(this.visibility)*500, "easeInOutCubic")
                 .startTween();
             }
@@ -129,7 +134,7 @@ class Experience {
         // If the branch has not grown yet, no need to display it
         if(this.fractalAngle == this.startingAngle) return;
         
-
+        
         push();
         translate(this.x, this.y);
         // Draw the branches

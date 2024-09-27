@@ -16,7 +16,7 @@ function preload() {
                 let image_name = categories[category].projects[project].image_name;
                 let image_path = "./assets/images/"+image_name
     
-                categories[category].projects[project].image = loadImage(image_path);
+                categories[category].projects[project].image_path = image_path;
             }
         }
     });

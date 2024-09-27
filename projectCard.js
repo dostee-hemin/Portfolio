@@ -2,7 +2,7 @@ class ProjectCard {
     constructor(x, y, project_info) {
         this.x = x;
         this.y = y;
-        this.img = project_info.image;
+        this.img = loadImage(project_info.image_path);
         this.name = project_info.name;
         this.description = project_info.description;
         this.tools = project_info.tools;
@@ -12,13 +12,14 @@ class ProjectCard {
         this.targetHoverAmnt = 0;
         this.isHovering = false;
     }
-
+    
     display() {
+        if(this.img.width != cardSize) this.img.resize(cardSize, cardSize);
+
         push()
         translate(this.x, this.y - this.hoverAmnt * 20);
         imageMode(CENTER);
-        noTint();
-        image(this.img, 0, 0, cardSize, cardSize);
+        image(this.img, 0, 0);
         
         // Black gradient
         const canvas = document.getElementById("defaultCanvas0");
@@ -101,6 +102,6 @@ class ProjectCard {
     }
 
     isNotVisible() {
-        return window.scrollY > this.y+this.cardSize/2 || window.scrollY < this.y-this.cardSize/2;
+        return window.scrollY > this.y+cardSize/2 || window.scrollY+windowHeight < this.y-cardSize/2;
     }
 }

@@ -10,6 +10,9 @@ class Leaf {
         this.gravityY = 0.2;
         this.thickness=0;
 
+        this.lifetime = 1;
+        this.isFading = false;
+
         this.isOnBranch = true;
         this.drag = 0.978;
     }
@@ -32,7 +35,7 @@ class Leaf {
     update() {
         if(this.isOnBranch) return;
 
-        if(this.isFading) this.alpha -= 5;
+        if(this.isFading) this.lifetime -= 0.01;
 
         this.accY += this.gravityY;
         this.targetVel.x = constrain(this.targetVel.x+this.accX * this.drag,-15,15);
@@ -56,7 +59,7 @@ class Leaf {
     }
 
     isFinished() {
-        return this.alpha <= 0;
+        return this.lifetime <= 0;
     }
 
     launch() {

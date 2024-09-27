@@ -70,7 +70,7 @@ function drawTetrisPattern() {
       let x = distanceFromCenter * cos(currentAngle) + width/2;
       let y = distanceFromCenter * sin(currentAngle) + windowHeight/2;
 
-      if(x < 0 || x > width || y < 0 || y > windowHeight) continue
+      if(x < -pieceBaseLength || x > width+pieceBaseLength || y < -pieceBaseLength || y > windowHeight+parallaxPosition+triangleHeight) continue
 
   
       // Assign the values of the current piece and display it to the screen

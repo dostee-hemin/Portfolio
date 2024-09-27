@@ -105,7 +105,7 @@ function draw() {
   }
   
   
-  if(prevMousePos.x != mouseX && prevMousePos.y != mouseY) mousePos = {"x": mouseX, "y": mouseY}
+  if(prevMousePos.x != mouseX || prevMousePos.y != mouseY) mousePos = {"x": mouseX, "y": mouseY}
   else mousePos.y += window.scrollY-prevScrollY;
   prevScrollY = window.scrollY;
   prevMousePos.x = mouseX;
@@ -113,21 +113,20 @@ function draw() {
   prevParallaxPosition = parallaxPosition;
 
   frameRates.push(frameRate())
-    if (frameRates.length > 100) {
-        frameRates.shift();
-    }
-    let avgFrameRate = 0;
-    for(let f=0; f<frameRates.length; f++) {
-        avgFrameRate += frameRates[f];
-    }
-    avgFrameRate /= frameRates.length;
-    console.log(round(avgFrameRate));
+  if (frameRates.length > 40) {
+      frameRates.shift();
+  }
+  let avgFrameRate = 0;
+  for(let f=0; f<frameRates.length; f++) {
+      avgFrameRate += frameRates[f];
+  }
+  avgFrameRate /= frameRates.length;
+  console.log(round(avgFrameRate));
 }
 
 function windowResized() {
   // Change the width of the screen
   resizeCanvas(windowWidth, height);
-
   // Reset the calculation of where the lowest point on the page is
   lowestYCoordinate = 0;
 
@@ -137,7 +136,6 @@ function windowResized() {
   setupSocialLinks();
 
   resizeCanvas(width, lowestYCoordinate);
-
 }
 
 // Function called once every time the mouse is pressed

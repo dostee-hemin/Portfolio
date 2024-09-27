@@ -29,11 +29,7 @@ class BackgroundPiece {
 
     display() {
         // Translate and rotate to the appropriate location
-        push();
-        translate(this.location.x,this.location.y);
-        scale(this.currentScale + this.twistScale);
-        rotate(this.angle + this.rotation);
-        
+        let interactionScale = 0;
         this.strokeColor = this.baseColor;
         strokeWeight(1);
         // Based on the distance to the mouse (value from 0-1), highlight the piece with size and color
@@ -53,7 +49,7 @@ class BackgroundPiece {
                 );
                 this.strokeColor = fadedColor;
                 strokeWeight(1+closeness);
-                scale(1+closeness/3);
+                interactionScale = closeness/3;
             }
         }
 
@@ -63,12 +59,14 @@ class BackgroundPiece {
         beginShape();
         let currentVerticies = pieceVertices[this.pieceType];
         for(let vertexIndex = 0; vertexIndex < currentVerticies.length; vertexIndex ++) {
-            let x = currentVerticies[vertexIndex][0] * pieceBaseLength;
-            let y = currentVerticies[vertexIndex][1] * pieceBaseLength;
+            let dir = new p5.Vector(currentVerticies[vertexIndex][0],currentVerticies[vertexIndex][1])
+            dir.rotate(this.angle + this.rotation)
+            dir.mult(this.currentScale + this.twistScale + interactionScale)
+            let x = this.location.x + dir.x * pieceBaseLength;
+            let y = this.location.y + dir.y * pieceBaseLength;
             vertex(x,y);
         }
         endShape(CLOSE);
-        pop();
     }
 
     // Update the display values over time
