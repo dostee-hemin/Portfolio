@@ -77,6 +77,8 @@ class Experience {
         if(this.fractalAngle == this.startingAngle) this.isNewLeaves = true
 
         // Update and display all leaves regardless of whether or not we can see the branches
+        stroke(0,200,50,100)
+        strokeWeight(10);
         for(let i=this.leaves.length-1; i>=0; i--) {
             let leaf = this.leaves[i];
 
@@ -93,11 +95,13 @@ class Experience {
             leaf.update();
 
             // Don't show the leaf if it's off the screen
-            if(leaf.location.y > height) continue
+            if(leaf.y > height) continue
 
             // If a stationary leaf gets brushed by the mouse, apply the wind force and launch it
             if(leaf.isUnderMouse() && leaf.isOnBranch) leaf.launch()
-            leaf.display();
+            // leaf.display();
+            if(leaf.x < 0 || leaf.x > width || leaf.y < window.scrollY || leaf.y > window.scrollY+windowHeight) continue
+            point(leaf.x,leaf.y);
         }
 
 
@@ -270,14 +274,16 @@ class Experience {
 
     makeBranch(len, branchAngle, x, y){
         // Add leaves only when the length of branch is short enough (i.e. close to the edge of the tree)
-        if (len < 30) {
-            if(this.isNewLeaves) this.leaves.push(new Leaf(x+this.x, -y+this.y,Math.abs(x)/40+3))
-            else this.leaves[this.leafIndex].setPositionAndThickness(x+this.x, -y+this.y,Math.abs(x)/40+3)
-            this.leafIndex += 1
+        if (len < 10) {
+            if(this.isNewLeaves) this.leaves.push(new Leaf(x+this.x, -y+this.y))
+            else {
+                this.leaves[this.leafIndex].setPositionAndThickness(x+this.x, -y+this.y)
+                this.leafIndex += 1
+            }
         }
 
         // If the branch length gets too short, leave the function
-        if (len < 4) return;
+        if (len < 8) return;
         
         // Skew the tree horizontally so that more horizontal branches are longer
         const adjustedLength = len * (Math.cos(branchAngle)*-3.5+5);
