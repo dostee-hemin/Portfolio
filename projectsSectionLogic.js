@@ -49,9 +49,9 @@ function drawProjectsSection() {
         rectMode(CORNER);
         rect(0,triangleHeight,width,categoryHeight);
         triangle(0,triangleHeight+categoryHeight-2,width,triangleHeight+categoryHeight-2,0,triangleHeight*2+categoryHeight+5);
-        stroke(200);
-        strokeWeight(3);
-        line(60,triangleHeight,60+categories[i].name.length * 24,triangleHeight);
+        // stroke(200);
+        // strokeWeight(3);
+        // line(60,triangleHeight,60+categories[i].name.length * 24,triangleHeight);
         translate(width/2,triangleHeight/2-gradientHeight/2);
         // Black gradient
         const canvas = document.getElementById("defaultCanvas0");
