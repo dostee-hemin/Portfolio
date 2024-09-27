@@ -99,4 +99,8 @@ class ProjectCard {
     isUnderMouse() {
         return mousePos.x > this.x-cardSize/2 && mousePos.x < this.x+cardSize/2 && mousePos.y > this.y-cardSize/2 && mousePos.y < this.y+cardSize/2;
     }
+
+    isNotVisible() {
+        return window.scrollY > this.y+this.cardSize/2 || window.scrollY < this.y-this.cardSize/2;
+    }
 }
