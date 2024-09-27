@@ -5,7 +5,7 @@ let topMostY;
 function setupExperienceTree() {
     experiences = [];
     
-    topMostY = height-socialsJSON.length*60-triangleHeight-230-triangleHeight-experiencesJSON.length*700;
+    topMostY = lowestYCoordinate-triangleHeight;
     for(let i=0; i<experiencesJSON.length; i++) {
         let visibility = 0;
         let x = width/2;
@@ -17,10 +17,19 @@ function setupExperienceTree() {
         experiences.push(new Experience(x,y,visibility,experiencesJSON[i]));
     }
 
-    lowestYCoordinate += experiencesJSON.length*700+triangleHeight;
+    lowestYCoordinate += experiencesJSON.length*450+1400;
 }
 
 function drawExperienceTree() {
+    const canvas = document.getElementById("defaultCanvas0");
+    const ctx = canvas.getContext("2d");
+    let gradient = ctx.createLinearGradient(0,topMostY,width,topMostY+experiencesJSON.length*450+1200);
+    gradient.addColorStop(0, color(50));
+    gradient.addColorStop(1, color(0,5,5));
+    ctx.fillStyle = gradient;
+    rect(0,topMostY,width,topMostY+experiencesJSON.length*450+1200);
+
+
     for(let i=0; i<experiences.length; i++) {
         experiences[i].update();
         experiences[i].drawBranches();
@@ -28,8 +37,8 @@ function drawExperienceTree() {
 
     // Draw the tree trunk at increasing thicknesses as you go down
     stroke(255);
-    for(let y=0;y<experiencesJSON.length*400;y+=10) {
-        strokeWeight(map(y,0,experiencesJSON.length*400,7,30));
+    for(let y=0;y<experiencesJSON.length*450;y+=10) {
+        strokeWeight(map(y,0,experiencesJSON.length*450,7,30));
         line(width/2,topMostY+1200+y,width/2,topMostY+1200+y+20);
     }
 }

@@ -6,9 +6,10 @@ function setupSocialLinks() {
 
     for(let social=0; social<socialsJSON.length; social++) {
         let x = width/2-117;
-        let y = height - socialsJSON.length*60 + social*60;
+        let y = lowestYCoordinate + social*60;
         socialLinks.push(new SocialLink(x,y, socialsJSON[social].text,socialsJSON[social].icon,socialsJSON[social].link));
     }
+    lowestYCoordinate += socialsJSON.length*60;
 }
 
 
@@ -26,6 +27,7 @@ class SocialLink {
     }
 
     display() {
+        noStroke();
         fill(255);
         textFont('LineIcons');
         textAlign(CENTER,CENTER);
