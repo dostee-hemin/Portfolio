@@ -7,8 +7,9 @@ class Leaf {
         this.targetVel = new p5.Vector();
         this.accX = 0;
         this.accY = 0;
-        this.gravityY = 0.3;
-        this.thickness=0;
+        this.gravityY = unitSize*0.03;
+        this.thickness = 0;
+        this.maxSpeed = unitSize*1.5;
 
         this.lifetime = 1;
         this.isFading = false;
@@ -22,7 +23,7 @@ class Leaf {
 
         this.x = x;
         this.y = y;
-        this.thickness = map(Math.abs(x-width/2),0,width/2,0,1)*20 + 7;
+        this.thickness = map(Math.abs(x-widthDiv2),0,widthDiv2,0,1)*unitSize*2 + unitSize;
     }
 
     display() {
@@ -38,11 +39,11 @@ class Leaf {
         if(this.isFading) this.lifetime -= 0.01;
 
         this.accY += this.gravityY;
-        this.targetVel.x = constrain(this.targetVel.x+this.accX * this.drag,-15,15);
-        this.targetVel.y = constrain(this.targetVel.y+this.accY * this.drag,-15,15);
+        this.targetVel.x = constrain(this.targetVel.x+this.accX * this.drag,-this.maxSpeed,this.maxSpeed);
+        this.targetVel.y = constrain(this.targetVel.y+this.accY * this.drag,-this.maxSpeed,this.maxSpeed);
 
         let amnt = this.targetVel.magSq()
-        if(random(1) < amnt/5000) this.targetVel.rotate(random(-amnt/300,amnt/300))
+        if(random(1) < amnt/(this.maxSpeed*this.maxSpeed*5.88)) this.targetVel.rotate(random(-amnt/(this.maxSpeed*30),amnt/(this.maxSpeed*30)))
         this.velX = lerp(this.velX,this.targetVel.x,0.09);
         this.velY = lerp(this.velY,this.targetVel.y,0.09);
         this.x += this.velX;
@@ -53,7 +54,7 @@ class Leaf {
 
     isUnderMouse() {
         if(mouseX == pmouseX && mouseY == pmouseY) return false;
-        return distSq(this.x,this.y,mouseX, mouseY) < 400;
+        return distSq(this.x,this.y,mouseX, mouseY) < unitSize*40;
     }
 
     isFinished() {
@@ -64,7 +65,7 @@ class Leaf {
         let directionX = mouseX - mousePos.x;
         let directionY = mouseY - mousePos.y;
 
-        this.targetVel.set(directionX * 0.5,directionY * 0.5).limit(15);
+        this.targetVel.set(directionX * 0.5,directionY * 0.5).limit(this.maxSpeed);
         this.isOnBranch = false;
     }
 }

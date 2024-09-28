@@ -5,36 +5,36 @@ let topMostY;
 function setupExperienceTree() {
     experiences = [];
     
-    topMostY = lowestYCoordinate-triangleHeight;
+    topMostY = lowestYCoordinate-triangleHeight-parallaxPosition;
     for(let i=0; i<experiencesJSON.length; i++) {
         let visibility = 0;
-        let x = width/2;
-        let y = topMostY+i*450+1200;
+        let x = widthDiv2;
+        let y = topMostY+i*unitSize*45+unitSize*120;
         if(i != 0) {
-            y+=400;
+            y+=unitSize*40;
             visibility = (i%2 == 0)?-1:1;
         }
         experiences.push(new Experience(x,y,visibility,experiencesJSON[i]));
     }
 
-    lowestYCoordinate += experiencesJSON.length*450+1400;
+    lowestYCoordinate += experiencesJSON.length*unitSize*45+unitSize*140;
 }
 
 function drawExperienceTree() {
     const canvas = document.getElementById("defaultCanvas0");
     const ctx = canvas.getContext("2d");
-    let gradient = ctx.createLinearGradient(0,topMostY,width,topMostY+experiencesJSON.length*450+1200);
+    let gradient = ctx.createLinearGradient(0,topMostY,width,topMostY+experiencesJSON.length*unitSize*45 + unitSize*120);
     gradient.addColorStop(0, color(50));
     gradient.addColorStop(1, color(0,5,5));
     ctx.fillStyle = gradient;
-    rect(0,topMostY,width,topMostY+experiencesJSON.length*450+1200);
+    rect(0,topMostY,width,topMostY+experiencesJSON.length*unitSize*45 + unitSize*120);
 
     textFont(fontBold);
     fill(255);
     noStroke();
-    textSize(40);
+    textSize(unitSize*4);
     textAlign(CENTER,CENTER);
-    text("Experiences and Education", width/2, topMostY+triangleHeight);
+    text("Experiences and Education", widthDiv2, topMostY+triangleHeight);
 
 
     for(let i=0; i<experiences.length; i++) {
@@ -44,9 +44,9 @@ function drawExperienceTree() {
 
     // Draw the tree trunk at increasing thicknesses as you go down
     stroke(255);
-    for(let y=0;y<experiencesJSON.length*450;y+=10) {
-        strokeWeight(map(y,0,experiencesJSON.length*450,7,30));
-        line(width/2,topMostY+1200+y,width/2,topMostY+1200+y+20);
+    for(let y=0;y<experiencesJSON.length*unitSize*45;y+=unitSize) {
+        strokeWeight(map(y,0,experiencesJSON.length*unitSize*45,unitSize*0.7,unitSize*3));
+        line(widthDiv2,topMostY+unitSize*120+y,widthDiv2,topMostY+unitSize*122+y);
     }
 }
 
@@ -62,7 +62,7 @@ class Experience {
         this.targetAngle = PI/8;
         this.isAnimating = false;
         this.isHovering = false;
-        this.branchLength = 100;
+        this.branchLength = unitSize*10;
         this.info = info
         this.targetAnimationAmount = 0;
         this.animationAmount = this.targetAnimationAmount;
@@ -101,10 +101,9 @@ class Experience {
 
             // If a stationary leaf gets brushed by the mouse, apply the wind force and launch it
             if(leaf.isUnderMouse() && leaf.isOnBranch) leaf.launch()
-            // leaf.display();
+
             if(leaf.x < 0 || leaf.x > width || leaf.y < window.scrollY || leaf.y > window.scrollY+windowHeight) continue
             leaf.display();
-            // point(leaf.x,leaf.y);
         }
 
 
@@ -113,7 +112,7 @@ class Experience {
         
 
         // Animate the branch to grow into view when the user has scrolled to the right point, and animate it to hide once the user leaves
-        if (window.scrollY+windowHeight*0.4 >=  this.y-900) {
+        if (window.scrollY+windowHeight*0.4 >=  this.y-unitSize*90) {
             if(!this.isAnimating) {
                 this.tween.pause();
                 this.tween = p5.tween.manager.addTween(this)
@@ -158,48 +157,48 @@ class Experience {
         }
 
         // Draw all the text information
-        let textX = this.visibility * 50;
+        let textX = this.visibility * unitSize*5;
         let textAlignment = CENTER;
         if (this.visibility != 0) textAlignment = this.visibility == 1 ? LEFT : RIGHT ; 
         let animationRatio = max(map(this.fractalAngle,this.startingAngle,this.targetAngle,-0.5,1),0);
-        translate(0,-900);
+        translate(0,-unitSize*90);
         // Title
         fill(255, animationRatio*255);
         noStroke();
-        textSize((1-this.info['title'].length/30) * 10 + 50);
+        textSize((1-this.info['title'].length/30) * unitSize + unitSize*5);
         textFont(fontBold);
         textAlign(textAlignment,CENTER);
-        text(this.info['title'], textX, (1-animationRatio)*50);
+        text(this.info['title'], textX, (1-animationRatio)*unitSize*5);
         // Place
         textFont(fontRegular);
-        textSize(35);
+        textSize(unitSize*3.5);
         fill(255-this.animationAmount*100,255-this.animationAmount*100,255, max(animationRatio*1.2-0.2,0)*255);
-        text(this.info['place'], textX, 60+((1-max(animationRatio*1.2-0.2,0))*50));
+        text(this.info['place'], textX, unitSize*6+((1-max(animationRatio*1.2-0.2,0))*unitSize*5));
         // Duration
         textFont(fontItalic);
-        textSize(20);
+        textSize(unitSize*2);
         fill(255, max(animationRatio*1.2-0.2,0)*255);
         let workingTime = this.info['start_date'] + ' - ' + this.info['end_date'];
-        text(workingTime, textX, 110+((1-max(animationRatio*1.2-0.2,0))*50));
+        text(workingTime, textX, unitSize*11+((1-max(animationRatio*1.2-0.2,0))*unitSize*5));
         
         // Description
         textAlign(textAlignment,TOP);
         textFont(fontRegular);
-        textSize(25);
+        textSize(unitSize*2.5);
         fill(255, max(animationRatio*2.5-1.5,0)*255);
 
         let paragraphedDescription = ""
         let words = this.info['description'].split(" ");
         for(let i=0; i<words.length; i++) {
-            if(textWidth(paragraphedDescription + words[i] + " ") > 800) paragraphedDescription += "\n";
+            if(textWidth(paragraphedDescription + words[i] + " ") > unitSize*80) paragraphedDescription += "\n";
             paragraphedDescription += words[i] + " ";
         }
-        text(paragraphedDescription, textX, 150+((1-max(animationRatio*2.5-1.5,0))*50));
+        text(paragraphedDescription, textX, unitSize*15+((1-max(animationRatio*2.5-1.5,0))*unitSize*5));
 
         let tagRows = [[]];
         let tagX = 0;
-        translate(0,(1-max(animationRatio*3-2,0))*50);
-        textSize(18);
+        translate(0,(1-max(animationRatio*3-2,0))*unitSize*5);
+        textSize(unitSize*1.8);
         textAlign(LEFT,CENTER);
         textFont(fontBold);
         for(let i=0; i<this.info['tags'].length; i++) {
@@ -211,33 +210,33 @@ class Experience {
             }
 
             tagRows[tagRows.length-1].push(tag)
-            tagX += textWidth(tag) + 40;
+            tagX += textWidth(tag) + unitSize*4;
         }
-        let tagY = 270;
+        let tagY = unitSize*27;
         for(let row=0; row<tagRows.length; row++) {
             let totalWidth = 0;
             for (let i=0; i<tagRows[row].length; i++) {
-                if(i!=0) totalWidth += 40
+                if(i!=0) totalWidth += unitSize*4
                 totalWidth += textWidth(tagRows[row][i]);
             }
             let tagX = -totalWidth/2;
-            if (this.visibility == 1) tagX = 60;
-            else if (this.visibility == -1) tagX = -totalWidth-60;
+            if (this.visibility == 1) tagX = unitSize*6;
+            else if (this.visibility == -1) tagX = -totalWidth-unitSize*6;
             for(let i=0; i<tagRows[row].length; i++) {
                 let tag = tagRows[row][i];
 
                 stroke(this.info["color_red"],this.info["color_green"],this.info["color_blue"],map(animationRatio,0.7,1,0,255));
-                strokeWeight(28);
+                strokeWeight(unitSize*2.8);
                 line(tagX,tagY,tagX+textWidth(tag),tagY);
                 
                 noStroke();
                 fill(255,map(animationRatio,0.7,1,0,255));
                 text(tag,tagX,tagY-2);
     
-                tagX += textWidth(tag) + 40;
+                tagX += textWidth(tag) + unitSize*4;
             }
 
-            tagY += 40;
+            tagY += unitSize*4;
         }
         pop();
     }
@@ -263,23 +262,23 @@ class Experience {
         if(this.fractalAngle == this.startingAngle) return false;
 
         textFont(fontRegular);
-        textSize(35);
+        textSize(unitSize*3.5);
         let placeTextWidth = textWidth(this.info['place'])
         let minX = this.x-placeTextWidth/2;
         let maxX = this.x+placeTextWidth/2;
         if(this.visibility == 1) {
-            minX = this.x+50;
+            minX = this.x+unitSize*5;
             maxX = minX + placeTextWidth;
         } else if (this.visibility == -1) {
-            maxX = this.x+-50;
+            maxX = this.x-unitSize*5;
             minX = maxX - placeTextWidth;
         }
-        return mousePos.x > minX && mousePos.x < maxX && mousePos.y > this.y-870 && mousePos.y < this.y-810;
+        return mousePos.x > minX && mousePos.x < maxX && mousePos.y > this.y-unitSize*87 && mousePos.y < this.y-unitSize*81;
     }
 
     makeBranch(len, branchAngle, x, y){
         // Add leaves only when the length of branch is short enough (i.e. close to the edge of the tree)
-        if (len < 30) {
+        if (len < unitSize*3) {
             if(this.isNewLeaves) this.leaves.unshift(new Leaf(x+this.x, -y+this.y))
             else {
                 this.leaves[this.leafIndex].setPositionAndThickness(x+this.x, -y+this.y)
@@ -288,7 +287,7 @@ class Experience {
         }
 
         // If the branch length gets too short, leave the function
-        if (len < 8) return;
+        if (len < unitSize) return;
         
         // Skew the tree horizontally so that more horizontal branches are longer
         const adjustedLength = len * (Math.cos(branchAngle)*-3.5+5);
@@ -304,7 +303,7 @@ class Experience {
         if (this.visibility == 1 && x2 < 0) x2 = 0;
     
         // Add branch to the list of branches, including the start and end points and the branch thickness
-        this.branchPoints.push([x,-y,x2,-y2,len/this.branchLength * 7]);
+        this.branchPoints.push([x,-y,x2,-y2,len/this.branchLength * unitSize*0.7]);
         
         // Shorten the length of the branch and draw the one to the left and to the right
         const newLen = len * 0.7;

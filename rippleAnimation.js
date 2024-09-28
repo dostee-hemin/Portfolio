@@ -2,7 +2,7 @@ class Ripple {
     constructor(x, y) {
         this.location = createVector(x,y);
         this.radius = 0;
-        this.growSpeed = 50;
+        this.growSpeed = unitSize*5;
     }
 
     // Function called to increase the size of the ripple

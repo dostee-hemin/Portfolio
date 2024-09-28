@@ -8,20 +8,27 @@ let prevParallaxPosition = 0;
 let parallaxPosition = 0;
 let frameRates = [];
 
+let widthDiv2;
+let heightDiv2;
+let smallestDimension;
+let largestDimension;
+let unitSize;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  
+  windowResized();
+  setupTetrisPattern();
 
   animator = new Animator();
   animator.startUpWebsite();
-
-  setupTetrisPattern();
-  windowResized();
 }
 
 function draw() {
   background(3, 15, 34);
 
-  parallaxPosition = max(map(window.scrollY,0,windowHeight/1.5,-100,-500),-500);
+
+  parallaxPosition = max(map(window.scrollY,0,windowHeight/1.5,-unitSize*10,-unitSize*50),-unitSize*50);
   parallaxOffset = parallaxPosition - prevParallaxPosition;
 
   if(window.scrollY < windowHeight) {
@@ -32,37 +39,39 @@ function draw() {
     // Profile image and outline
     imageMode(CENTER);
     tint(255,animator.profileImageAlpha);
-    image(profileImage, width/2, windowHeight/2-animator.profileImageOffset, animator.profileImageSize, animator.profileImageSize);
+    image(profileImage, widthDiv2, heightDiv2-animator.profileImageOffset, animator.profileImageSize, animator.profileImageSize);
     noFill();
     stroke(0,0,20);
-    strokeWeight(8);
-    ellipse(width/2, windowHeight/2-animator.profileImageOffset, animator.profileImageSize, animator.profileImageSize);
+    strokeWeight(width*0.004);
+    ellipse(widthDiv2, heightDiv2-animator.profileImageOffset, animator.profileImageSize, animator.profileImageSize);
     
     // Title text and subtitle text
     noStroke();
     fill(255, animator.titleTextAlpha);
-    textSize(60);
+    textSize(unitSize*6);
     textAlign(CENTER,CENTER);
     textFont(fontBold);
-    text("Dostee Hemin", width/2, windowHeight/2 + 140 - animator.titleTextOffset);
+    text("Dostee Hemin", widthDiv2, heightDiv2 + width*0.073 - animator.titleTextOffset);
     fill(200, animator.subtitleTextAlpha);
-    textSize(30);
+    textSize(unitSize*3);
     textFont(fontRegular);
-    text("Software Engineer", width/2, windowHeight/2 + 200 - animator.subtitleTextOffset);
+    text("Software Engineer", widthDiv2, heightDiv2 + width*0.104 - animator.subtitleTextOffset);
 
     // Projects indicator arrow
     push();
-    translate(width/2,windowHeight/2+400-animator.projectsArrowOffset);
+    translate(widthDiv2,heightDiv2+width*0.208-animator.projectsArrowOffset);
     stroke(200, animator.projectsArrowAlpha);
-    strokeWeight(5);
-    line(0,-30,0,30);
-    line(-15,15,0,30);
-    line(15,15,0,30);
+    strokeWeight(unitSize/2);
+    let v1 = unitSize*3
+    let v2 = unitSize*1.5
+    line(0,-v1,0,v1);
+    line(-v2,v2,0,v1);
+    line(v2,v2,0,v1);
   
     noStroke();
     fill(200, animator.projectsArrowAlpha);
-    textSize(20);
-    text("Check Out Projects", 0, -50);
+    textSize(unitSize*2);
+    text("Check Out Projects", 0, -unitSize*5);
     pop();
     pop();
   }
@@ -79,12 +88,12 @@ function draw() {
   noStroke();
   fill(255);
   textAlign(CENTER,CENTER);
-  textSize(50);
+  textSize(unitSize*5);
   textFont(fontBold);
-  text("Contact Me", width/2, height-socialsJSON.length*60-180);
+  text("Contact Me", widthDiv2, height-socialsJSON.length*unitSize*6-unitSize*18);
   textFont(fontRegular);
-  textSize(22);
-  text("No matter if it's about tech, games, or movies, let's start a chat!\nCheck out my socials below if you want to get in touch.", width/2, height-socialsJSON.length*60-100);
+  textSize(unitSize*2.2);
+  text("No matter if it's about tech, games, or movies, let's start a chat!\nCheck out my socials below if you want to get in touch.", widthDiv2, height-socialsJSON.length*unitSize*6-unitSize*10);
   
   for(let i=0; i<cards.length; i++) {
     let card = cards[i];
@@ -130,6 +139,13 @@ function windowResized() {
   // Reset the calculation of where the lowest point on the page is
   lowestYCoordinate = 0;
 
+  // Calculate all the resolution variables again
+  widthDiv2 = width/2;
+  heightDiv2 = windowHeight/2;
+  smallestDimension = min(width,windowHeight);
+  largestDimension = max(width,windowHeight);
+  unitSize = largestDimension*0.005;
+  
   // Setup all parts of the scene again with the new screen dimensions
   setupProjectsSection();
   setupExperienceTree();

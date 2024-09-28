@@ -1,8 +1,8 @@
 // These values you can play around with to adjust how the background pattern is displayed
 let numberOfBackgroundPieces = 1300;    // How many Tetris pieces we want to display in the pattern
-let highlightRadius = 300;              // The distance (in pixels) a piece has to be from the mouse before it can be highlighted
-let pieceBaseLength = 10;               // The side length (in pixels) of a piece's individual squares to determine the size of the whole piece
-let targetPatternRadius = 32.1;         // The target scale we want to reach for the pattern
+let highlightRadius;                    // The distance (in pixels) a piece has to be from the mouse before it can be highlighted
+let pieceBaseLength;                    // The side length (in pixels) of a piece's individual squares to determine the size of the whole piece
+let targetPatternRadius;                // The target scale we want to reach for the pattern
 let targetDeltaAngle = 137.5;           // The target angle difference we want to reach for the pattern
 
 let backgroundPieces = [];              // The list containing all Tetris pieces of the pattern
@@ -23,11 +23,15 @@ let pieceVertices = [                   // The vertex coordinates of each of the
 
 // Function to start everything required for the Tetris pattern
 function setupTetrisPattern() {
+    pieceBaseLength = unitSize;
+    highlightRadius = unitSize*30;
+    targetPatternRadius = unitSize*3.21;
+
     // Create a bunch of new background pieces
     for(let i=0; i<numberOfBackgroundPieces; i++) {
         backgroundPieces.push(new BackgroundPiece());
     }
-    
+
     // Assign the piece colors here
     colors.push(color(255,255,0));  // O
     colors.push(color(0,255,255));  // I
@@ -64,11 +68,11 @@ function drawTetrisPattern() {
       let currentAngle = i * radians(deltaAngle);             //Calculate the angle using the equation
 
       // Don't show any pieces that would be under the profile image
-      if (distanceFromCenter < animator.profileImageSize/2 && animator.profileImageOffset < 40) continue;
+      if (distanceFromCenter < animator.profileImageSize/2 && animator.profileImageOffset < unitSize*4) continue;
       
       // Calculate the "x" and "y" poition using Polar to Carteasian transformations
-      let x = distanceFromCenter * cos(currentAngle) + width/2;
-      let y = distanceFromCenter * sin(currentAngle) + windowHeight/2;
+      let x = distanceFromCenter * cos(currentAngle) + widthDiv2;
+      let y = distanceFromCenter * sin(currentAngle) + heightDiv2;
 
       if(x < -pieceBaseLength || x > width+pieceBaseLength || y < -pieceBaseLength || y > windowHeight+parallaxPosition+triangleHeight) continue
 

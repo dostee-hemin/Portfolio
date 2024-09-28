@@ -36,18 +36,18 @@ class Animator {
         
         p5.tween.manager.addTween(this)
             .addMotions([
-                { key: 'profileImageSize', target: 250},
+                { key: 'profileImageSize', target: unitSize*25},
                 { key: 'profileImageAlpha', target: 255}
             ], 1000, "easeOutQuad")
-            .addMotion('profileImageSize',250, 1000)
-            .addMotion('profileImageOffset',100, 1500,"easeInOutSin")
+            .addMotion('profileImageSize',unitSize*25, 1000)
+            .addMotion('profileImageOffset',unitSize*10, 1500,"easeInOutSin")
             .startTween();
         
         p5.tween.manager.addTween(this)
             .addMotion('titleTextAlpha',0, 2800)
             .addMotions([
-                { key: 'titleTextAlpha', target: 255},
-                { key: 'titleTextOffset', target: 50}
+                { key: 'titleTextAlpha', target: unitSize*25.5},
+                { key: 'titleTextOffset', target: unitSize*5}
             ], 700, "easeInOutQuad")
             .startTween();
 
@@ -55,7 +55,7 @@ class Animator {
             .addMotion('subtitleTextAlpha',0, 3000)
             .addMotions([
                 { key: 'subtitleTextAlpha', target: 255},
-                { key: 'subtitleTextOffset', target: 50}
+                { key: 'subtitleTextOffset', target: unitSize*5}
             ], 700, "easeInOutQuad")
             .startTween();
 
@@ -63,7 +63,7 @@ class Animator {
             .addMotion('projectsArrowAlpha',0, 4000)
             .addMotions([
                 { key: 'projectsArrowAlpha', target: 255},
-                { key: 'projectsArrowOffset', target: 50}
+                { key: 'projectsArrowOffset', target: unitSize*5}
             ], 700, "easeInOutQuad")
             .startTween();
     }

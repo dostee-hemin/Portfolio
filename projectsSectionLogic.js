@@ -2,15 +2,18 @@
 let categories;
 
 // Variables that control how big the category section is drawn
-let triangleHeight = 150;
+let triangleHeight;
 let categoryBaseHeight;
 
-let cardSize = 350;
+let cardSize;
 let numColumns;
 
 let cards=[];
 
 function setupProjectsSection() {
+    cardSize = unitSize*35;
+    triangleHeight = unitSize*15;
+
     cards = [];
     categoryBaseHeight = cardSize * 1.3;
     numColumns = int(width*0.8/cardSize);
@@ -19,7 +22,7 @@ function setupProjectsSection() {
         for(let project=0; project<categories[category].projects.length; project++) {
             let currentProject = categories[category].projects[project]; 
 
-            let x = (width-120)/numColumns * (project%numColumns+0.5) + 60;
+            let x = (width-unitSize*12)/numColumns * (project%numColumns+0.5) + unitSize*6;
             if (category%2 != 0) {x = width - x;}
             let y = currentY+(int(project/numColumns)+0.5) * categoryBaseHeight;
 
@@ -28,7 +31,7 @@ function setupProjectsSection() {
         currentY += ceil(categories[category].projects.length/numColumns) * categoryBaseHeight + triangleHeight;
     }
 
-    lowestYCoordinate = currentY-parallaxPosition-500;
+    lowestYCoordinate = currentY-parallaxPosition-unitSize*50;
 }
 
 function drawProjectsSection() {
@@ -49,7 +52,7 @@ function drawProjectsSection() {
         rectMode(CORNER);
         rect(0,triangleHeight,width,categoryHeight);
         triangle(0,triangleHeight+categoryHeight-2,width,triangleHeight+categoryHeight-2,0,triangleHeight*2+categoryHeight+5);
-        translate(width/2,triangleHeight/2-gradientHeight/2);
+        translate(widthDiv2,triangleHeight/2-gradientHeight/2);
         // Black gradient
         const canvas = document.getElementById("defaultCanvas0");
         const ctx = canvas.getContext("2d");
@@ -60,16 +63,16 @@ function drawProjectsSection() {
         noStroke();
         rectMode(CENTER);
         rotate(atan(triangleHeight/width));
-        rect(0,0,width+100,gradientHeight);
+        rect(0,0,width+unitSize*10,gradientHeight);
         pop();
 
         // Draw the category name
         textFont(fontBold);
         fill(255);
         noStroke();
-        textSize(40);
+        textSize(unitSize*4);
         textAlign(i%2 == 0 ? LEFT : RIGHT,CENTER);
-        text(categories[i].name,i%2 == 0 ? 60 : width-60,startingY+triangleHeight*0.8);
+        text(categories[i].name,i%2 == 0 ? unitSize*6 : width-unitSize*6,startingY+triangleHeight*0.8);
 
         startingY += categoryHeight+triangleHeight;
     }
