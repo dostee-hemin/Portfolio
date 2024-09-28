@@ -1,7 +1,6 @@
 let experiencesJSON;
 let experiences = [];
 let topMostY;
-let noiseTime = 0;
 
 function setupExperienceTree() {
     experiences = [];
@@ -35,7 +34,7 @@ function drawExperienceTree() {
     noStroke();
     textSize(40);
     textAlign(CENTER,CENTER);
-    text("Experiences", width/2, topMostY+triangleHeight);
+    text("Experiences and Education", width/2, topMostY+triangleHeight);
 
 
     for(let i=0; i<experiences.length; i++) {
@@ -104,7 +103,8 @@ class Experience {
             if(leaf.isUnderMouse() && leaf.isOnBranch) leaf.launch()
             // leaf.display();
             if(leaf.x < 0 || leaf.x > width || leaf.y < window.scrollY || leaf.y > window.scrollY+windowHeight) continue
-            point(leaf.x,leaf.y);
+            leaf.display();
+            // point(leaf.x,leaf.y);
         }
 
 
@@ -166,7 +166,7 @@ class Experience {
         // Title
         fill(255, animationRatio*255);
         noStroke();
-        textSize(60);
+        textSize((1-this.info['title'].length/30) * 10 + 50);
         textFont(fontBold);
         textAlign(textAlignment,CENTER);
         text(this.info['title'], textX, (1-animationRatio)*50);
@@ -279,8 +279,8 @@ class Experience {
 
     makeBranch(len, branchAngle, x, y){
         // Add leaves only when the length of branch is short enough (i.e. close to the edge of the tree)
-        if (len < 10) {
-            if(this.isNewLeaves) this.leaves.push(new Leaf(x+this.x, -y+this.y))
+        if (len < 30) {
+            if(this.isNewLeaves) this.leaves.unshift(new Leaf(x+this.x, -y+this.y))
             else {
                 this.leaves[this.leafIndex].setPositionAndThickness(x+this.x, -y+this.y)
                 this.leafIndex += 1

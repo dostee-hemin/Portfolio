@@ -12,6 +12,18 @@
         "link": "https://meedfoundation.org"
     },
     {
+        "title": "Software Engineering Graduate",
+        "place": "American University of Iraq, Sulaimani",
+        "start_date": "Fall 2020",
+        "end_date": "Spring 2024",
+        "description": "Graduated as the UG Valedictorian for the graduating class of Spring 2024",
+        "tags": ["Software Design", "Software Testing", "Algorithms and Data Structures", "Project Management", "Databases and Networking"],
+        "color_red": 18,
+        "color_green": 34,
+        "color_blue": 67,
+        "link": "https://auis.edu.krd"
+    },
+    {
         "title": "Machine Learning Developer",
         "place": "Agora Vision",
         "start_date": "2022",

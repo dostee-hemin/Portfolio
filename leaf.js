@@ -7,7 +7,7 @@ class Leaf {
         this.targetVel = new p5.Vector();
         this.accX = 0;
         this.accY = 0;
-        this.gravityY = 0.2;
+        this.gravityY = 0.3;
         this.thickness=0;
 
         this.lifetime = 1;
@@ -22,12 +22,12 @@ class Leaf {
 
         this.x = x;
         this.y = y;
-        this.thickness = map(Math.abs(x-width/2),0,width/2,0,1)*8 + 10;
+        this.thickness = map(Math.abs(x-width/2),0,width/2,0,1)*20 + 7;
     }
 
     display() {
         if(this.x < 0 || this.x > width || this.y < window.scrollY || this.y > window.scrollY+windowHeight) return
-        stroke(10,140,50,100);
+        stroke(10,140,50,this.lifetime*200);
         strokeWeight(this.thickness);
         point(this.x, this.y);
     }
@@ -42,11 +42,9 @@ class Leaf {
         this.targetVel.y = constrain(this.targetVel.y+this.accY * this.drag,-15,15);
 
         let amnt = this.targetVel.magSq()
-        if(random(1) < amnt/5000) {
-            this.targetVel.rotate(random(-amnt/400,amnt/400))
-        }
-        this.velX = lerp(this.velX,this.targetVel.x,0.03);
-        this.velY = lerp(this.velY,this.targetVel.y,0.03);
+        if(random(1) < amnt/5000) this.targetVel.rotate(random(-amnt/300,amnt/300))
+        this.velX = lerp(this.velX,this.targetVel.x,0.09);
+        this.velY = lerp(this.velY,this.targetVel.y,0.09);
         this.x += this.velX;
         this.y += this.velY;
         this.accX = 0;
@@ -66,11 +64,7 @@ class Leaf {
         let directionX = mouseX - mousePos.x;
         let directionY = mouseY - mousePos.y;
 
-        
-        this.accX = constrain(directionX * 0.5,-15,15);
-        this.accY = constrain(directionY * 0.5,-15,15);
-        this.velX = this.accX * 0.7;
-        this.velY = this.accY * 0.7;
+        this.targetVel.set(directionX * 0.5,directionY * 0.5).limit(15);
         this.isOnBranch = false;
     }
 }
