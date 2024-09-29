@@ -37,43 +37,51 @@ function setupProjectsSection() {
 function drawProjectsSection() {
     // Variable that starts at the bottom of the screen and goes lower with each category
     let startingY = windowHeight;
-    let gradientHeight = triangleHeight;
-    for(let i=0; i<categories.length; i++) {
-        let categoryHeight = ceil(categories[i].projects.length/numColumns) * categoryBaseHeight;
-
-        // Draw the upper and lower triangles, the middle rectangle, and the name underline.
-        // Categories alternate between being drawn from the left and from the right 
+    for(let i=0; i<categories.length+1; i++) {
+        
         push();
         translate(i%2 == 0? 0 : width, startingY);
-        fill(3,map(i,0,categories.length,20,70),map(i,0,categories.length,50,120));
-        noStroke();
         scale(i%2 == 0 ? 1 : -1, 1);
-        triangle(0,0,width,triangleHeight+1,0,triangleHeight+1);
-        rectMode(CORNER);
-        rect(0,triangleHeight,width,categoryHeight);
-        triangle(0,triangleHeight+categoryHeight-2,width,triangleHeight+categoryHeight-2,0,triangleHeight*2+categoryHeight+5);
-        translate(widthDiv2,triangleHeight/2-gradientHeight/2);
+        
+        if(i < categories.length) {
+            let categoryHeight = ceil(categories[i].projects.length/numColumns) * categoryBaseHeight;
+            // Draw the category section as a trapezoid.
+            // Categories alternate between being drawn from the left and from the right 
+            fill(3,map(i,0,categories.length,20,70),map(i,0,categories.length,50,120));
+            noStroke();
+            beginShape();
+            vertex(0,-unitSize*0.2)
+            vertex(width,triangleHeight-unitSize*0.2)
+            vertex(width,triangleHeight+categoryHeight)
+            vertex(0,triangleHeight*2+categoryHeight)
+            endShape(CLOSE);
+
+            // Draw the category name
+            textFont(fontBold);
+            fill(255);
+            noStroke();
+            textSize(unitSize*4);
+            textAlign(i%2 == 0 ? LEFT : RIGHT,CENTER);
+            text(categories[i].name,i%2 == 0 ? unitSize*6 : -unitSize*6,triangleHeight*0.8);
+
+            startingY += categoryHeight+triangleHeight;
+        }
+
+
         // Black gradient
+        translate(widthDiv2,0);
         const canvas = document.getElementById("defaultCanvas0");
         const ctx = canvas.getContext("2d");
-        let gradient = ctx.createLinearGradient(0,0,0,gradientHeight);
+        let gradient = ctx.createLinearGradient(0,0,0,triangleHeight);
         gradient.addColorStop(0, color(0, 0));
-        gradient.addColorStop(1, color(0, 230));
+        gradient.addColorStop(1, color(0));
         ctx.fillStyle = gradient;
         noStroke();
         rectMode(CENTER);
         rotate(atan(triangleHeight/width));
-        rect(0,0,width+unitSize*10,gradientHeight);
+        rect(0,0,width+unitSize*10,triangleHeight);
+        
         pop();
 
-        // Draw the category name
-        textFont(fontBold);
-        fill(255);
-        noStroke();
-        textSize(unitSize*4);
-        textAlign(i%2 == 0 ? LEFT : RIGHT,CENTER);
-        text(categories[i].name,i%2 == 0 ? unitSize*6 : width-unitSize*6,startingY+triangleHeight*0.8);
-
-        startingY += categoryHeight+triangleHeight;
     }
 }

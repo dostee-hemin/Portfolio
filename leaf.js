@@ -53,8 +53,39 @@ class Leaf {
     }
 
     isUnderMouse() {
-        if(mouseX == pmouseX && mouseY == pmouseY) return false;
-        return distSq(this.x,this.y,mouseX, mouseY) < unitSize*40;
+        if(mousePos.x == prevMousePos.x) return false;
+        // Calculate the components of the line vector
+        let dx = mousePos.x - prevMousePos.x;
+        let dy = mousePos.y - prevMousePos.y;
+
+        // Calculate the components of the vector from the line start to the point
+        let px = this.x - prevMousePos.x;
+        let py = this.y - prevMousePos.y;
+
+        // Calculate the dot product of the two vectors
+        let dot = px * dx + py * dy;
+
+        // Calculate the length squared of the line vector
+        let lenSq = dx * dx + dy * dy;
+
+        // Calculate the projection factor
+        let param = dot / lenSq;
+
+        // Find the closest point on the line segment
+        let closestX, closestY;
+        if (param < 0) {
+            closestX = prevMousePos.x;
+            closestY = prevMousePos.y;
+        } else if (param > 1) {
+            closestX = mousePos.x;
+            closestY = mousePos.y;
+        } else {
+            closestX = prevMousePos.x + param * dx;
+            closestY = prevMousePos.y + param * dy;
+        }
+
+        // Calculate the squared distance from the point to the closest point on the line
+        return distSq(this.x,this.y,closestX, closestY) < unitSize*40;
     }
 
     isFinished() {
@@ -62,8 +93,8 @@ class Leaf {
     }
 
     launch() {
-        let directionX = mouseX - mousePos.x;
-        let directionY = mouseY - mousePos.y;
+        let directionX = mousePos.x - prevMousePos.x;
+        let directionY = mousePos.y - prevMousePos.y;
 
         this.targetVel.set(directionX * 0.5,directionY * 0.5).limit(this.maxSpeed);
         this.isOnBranch = false;

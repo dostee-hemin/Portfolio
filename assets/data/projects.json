@@ -11,7 +11,7 @@
             },
             {
                 "name":"Book Cover Generator",
-                "description":"A tool to generate a unique book covers for books utilizing large language models (Gemini API) and image generation (Stable Diffusion).",
+                "description":"A tool to generate unique book covers for books utilizing large language models (Gemini API) and image generation (Stable Diffusion).",
                 "tools":["Gemini API", "Stable Diffusion", "Google Cloud Platform", "Python"],
                 "link":"https://www.youtube.com",
                 "image_name":"template.png"

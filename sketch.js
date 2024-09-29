@@ -28,6 +28,8 @@ function draw() {
   background(3, 15, 34);
 
 
+  if(pmouseX != mouseX || pmouseY != mouseY) mousePos = {"x": mouseX, "y": mouseY}
+  else mousePos.y += window.scrollY-prevScrollY;
   parallaxPosition = max(map(window.scrollY,0,windowHeight/1.5,-unitSize*10,-unitSize*50),-unitSize*50);
   parallaxOffset = parallaxPosition - prevParallaxPosition;
 
@@ -114,11 +116,9 @@ function draw() {
   }
   
   
-  if(prevMousePos.x != mouseX || prevMousePos.y != mouseY) mousePos = {"x": mouseX, "y": mouseY}
-  else mousePos.y += window.scrollY-prevScrollY;
   prevScrollY = window.scrollY;
-  prevMousePos.x = mouseX;
-  prevMousePos.y = mouseY;
+  prevMousePos.x = mousePos.x;
+  prevMousePos.y = mousePos.y;
   prevParallaxPosition = parallaxPosition;
 
   frameRates.push(frameRate())

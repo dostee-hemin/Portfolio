@@ -23,8 +23,9 @@ function setupExperienceTree() {
 function drawExperienceTree() {
     const canvas = document.getElementById("defaultCanvas0");
     const ctx = canvas.getContext("2d");
-    let gradient = ctx.createLinearGradient(0,topMostY,width,topMostY+experiencesJSON.length*unitSize*45 + unitSize*120);
-    gradient.addColorStop(0, color(50));
+    let gradient = ctx.createLinearGradient(width,topMostY,0,topMostY+experiencesJSON.length*unitSize*45 + unitSize*120);
+    gradient.addColorStop(0, color(40,40,50));
+    gradient.addColorStop(0.6, color(15,10,20));
     gradient.addColorStop(1, color(0,5,5));
     ctx.fillStyle = gradient;
     rect(0,topMostY,width,topMostY+experiencesJSON.length*unitSize*45 + unitSize*120);
@@ -33,7 +34,7 @@ function drawExperienceTree() {
     fill(255);
     noStroke();
     textSize(unitSize*4);
-    textAlign(CENTER,CENTER);
+    textAlign(CENTER,TOP);
     text("Experiences and Education", widthDiv2, topMostY+triangleHeight);
 
 
