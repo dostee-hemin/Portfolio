@@ -135,7 +135,7 @@ class Experience {
             if(!this.isAnimating) {
                 this.tween.pause();
                 this.tween = p5.tween.manager.addTween(this)
-                .addMotion('fractalAngle', this.targetAngle, 3000, "easeOutQuad")
+                .addMotion('fractalAngle', this.targetAngle, 2000, "easeOutQuad")
                 .startTween();
             }
             this.isAnimating = true;
@@ -143,7 +143,7 @@ class Experience {
             if(this.isAnimating) {
                 this.tween.pause();
                 this.tween = p5.tween.manager.addTween(this)
-                .addMotion('fractalAngle', this.startingAngle, 1500-abs(this.visibility)*500, "easeInOutCubic")
+                .addMotion('fractalAngle', this.startingAngle, 1300-abs(this.visibility)*500, "easeInOutCubic")
                 .startTween();
             }
             this.isAnimating = false;

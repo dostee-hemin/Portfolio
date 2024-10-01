@@ -6,7 +6,6 @@ let prevMousePos = {"x":0,"y":0};
 let prevScrollY;
 let prevParallaxPosition = 0;
 let parallaxPosition = 0;
-let frameRates = [];
 
 let widthDiv2;
 let heightDiv2;
@@ -30,10 +29,9 @@ function setup() {
 
 function draw() {
   background(3, 15, 34);
+
   if(isMobileDevice) {
-    if(frameCount % 30 == 0) {
-      mobileTetrisPieces.push(new BackgroundPiece(true));
-    }
+    if(frameCount % 60 == 0) mobileTetrisPieces.push(new BackgroundPiece(true));
     
     // Loop through all background pieces to update and display them
     for(let i=mobileTetrisPieces.length-1; i>=0; i--) {
@@ -47,12 +45,12 @@ function draw() {
     fill(255);
     noStroke();
     textFont(fontBold);
-    textSize(unitSize*7);
+    textSize(width*0.08);
     textAlign(CENTER, CENTER);
     text("Whoops!", width/2, windowHeight/2);
     textFont(fontRegular);
-    textSize(unitSize*3);
-    text("The mobile version of this website is currently in development...\nTry opening this page on your desktop.", width/2, windowHeight/2+unitSize*10)
+    textSize(width*0.03);
+    text("The mobile version of this website is currently in development...\nTry opening this page on your desktop.", width/2, windowHeight/2+width*0.1)
     return;
   }
 
@@ -148,17 +146,6 @@ function draw() {
   prevMousePos.x = mousePos.x;
   prevMousePos.y = mousePos.y;
   prevParallaxPosition = parallaxPosition;
-
-  frameRates.push(frameRate())
-  if (frameRates.length > 40) {
-      frameRates.shift();
-  }
-  let avgFrameRate = 0;
-  for(let f=0; f<frameRates.length; f++) {
-      avgFrameRate += frameRates[f];
-  }
-  avgFrameRate /= frameRates.length;
-  console.log(round(avgFrameRate));
 }
 
 function windowResized() {

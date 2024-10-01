@@ -6,15 +6,15 @@
                 "name":"Kurdish Text-to-Speech",
                 "description":"A custom trained text to speech model used in our winning project 'Kurdish Sign Language Convertor' for the 2023 hackasuly Competition.",
                 "tools":["Coqui AI", "Google Colab", "Python"],
-                "link":"https://www.youtube.com",
-                "image_name":"template.png"
+                "link":"",
+                "image_name":""
             },
             {
                 "name":"Book Cover Generator",
                 "description":"A tool to generate unique book covers for books utilizing large language models (Gemini API) and image generation (Stable Diffusion).",
                 "tools":["Gemini API", "Stable Diffusion", "Google Cloud Platform", "Python"],
-                "link":"https://www.youtube.com",
-                "image_name":"template.png"
+                "link":"",
+                "image_name":""
             }
         ]
     },
@@ -26,35 +26,35 @@
                 "description":"A murder-mystery game utilizing large language models to simulate the thought, emotion, and reaction of virtual characters.",
                 "tools":["Godot", "GDScript", "Github Desktop"],
                 "link":"https://github.com/dostee-hemin/Dolus",
-                "image_name":"template.png"
+                "image_name":"dolus.png"
             },
             {
                 "name":"TetrisGo",
                 "description":"A rhythm game utilizing pose detection to make the player dance to the beat of the music to play a game of Tetris.",
                 "tools":["MediaPipe Pose API", "p5.JS", "HTML", "JavaScript"],
                 "link":"https://github.com/dostee-hemin/TetrisGo",
-                "image_name":"template.png"
+                "image_name":"tetris_go.png"
             },
             {
                 "name":"Music Rewind",
                 "description":"A puzzle platformer game that uses rewinding powers and background music to control the level.",
                 "tools":["Processing", "Box2D Physics Library"],
-                "link":"https://github.com/dostee-hemin/TetrisGo",
-                "image_name":"template.png"
+                "link":"https://dostee-hemin.itch.io/music-rewind",
+                "image_name":"music_rewind.png"
             },
             {
                 "name":"Walmart Beat Saber",
                 "description":"A recreation of Beat Saber entirely on the web utilizing pose detection and a webcam to simulate VR interaction.",
                 "tools":["MediaPipe Pose API", "p5.JS", "HTML", "JavaScript"],
-                "link":"https://github.com/dostee-hemin/TetrisGo",
-                "image_name":"template.png"
+                "link":"https://github.com/dostee-hemin/Walmart-Beat-Saber",
+                "image_name":""
             },
             {
                 "name":"Net Attack",
                 "description":"A tower defense game that uses electronic devices to teach networking concepts in a fun and novel way.",
                 "tools":["Processing", "Java"],
-                "link":"https://github.com/dostee-hemin/TetrisGo",
-                "image_name":"template.png"
+                "link":"",
+                "image_name":"net_attack.png"
             }
         ]
     },
@@ -65,22 +65,22 @@
                 "name":"Mirror Maze Simulation",
                 "description":"A mirror maze creation tool that allows you to design your own mirror maze and simulate how it will look.",
                 "tools":["Processing"],
-                "link":"https://www.youtube.com",
-                "image_name":"template.png"
+                "link":"",
+                "image_name":"mirror_maze_simulation.png"
             },
             {
                 "name":"Hologram Fan Simulation",
                 "description":"A visual simulation of a high-speed LED hologram fan to see how to program and design one myself.",
                 "tools":["Processing"],
                 "link":"https://github.com/dostee-hemin/Hologram_Fan_Simulation",
-                "image_name":"template.png"
+                "image_name":"hologram_fan_simulation.png"
             },
             {
                 "name":"Photo Mosaic Generator",
                 "description":"A tool that automatically reconstructs any photo using multiple smaller photos to create a work of art.",
                 "tools":["Processing"],
-                "link":"https://github.com/dostee-hemin/Hologram_Fan_Simulation",
-                "image_name":"template.png"
+                "link":"",
+                "image_name":"photo_mosaic.png"
             }
         ]
     }

@@ -25,7 +25,7 @@ let pieceVertices = [                   // The vertex coordinates of each of the
 function setupTetrisPattern() {
     pieceBaseLength = unitSize;
     highlightRadius = unitSize*30;
-    targetPatternRadius = unitSize*3.21;
+    targetPatternRadius = unitSize*3.7;
 
     if(frameCount == 0) {
         // Create a bunch of new background pieces

@@ -2,7 +2,8 @@ class ProjectCard {
     constructor(x, y, project_info) {
         this.x = x;
         this.y = y;
-        this.img = loadImage(project_info.image_path);
+        this.img = null;
+        if(project_info.image_path.split(".").length > 2) this.img = loadImage(project_info.image_path);
         this.name = project_info.name;
         this.description = project_info.description;
         this.tools = project_info.tools;
@@ -14,23 +15,35 @@ class ProjectCard {
     }
     
     display() {
-        if(this.img.width != cardSize) this.img.resize(cardSize, cardSize);
-
         push()
         translate(this.x, this.y - this.hoverAmnt * 20);
-        imageMode(CENTER);
-        image(this.img, 0, 0);
+        
+        if(this.img == null) {
+            const canvas = document.getElementById("defaultCanvas0");
+            const ctx = canvas.getContext("2d");
+            let gradient = ctx.createLinearGradient(-cardSize*0.5,-cardSize*0.5,cardSize*0.5,cardSize*0.5);
+            gradient.addColorStop(0, color('#115CF0'));
+            gradient.addColorStop(1, color('#930980'));
+            ctx.fillStyle = gradient;
+            noStroke();
+            rectMode(CENTER);
+            rect(0,0,cardSize,cardSize);
+        } else {
+            if(this.img.width != cardSize) this.img.resize(cardSize, cardSize);
+            imageMode(CENTER);
+            image(this.img, 0, 0);
+        }
         
         // Black gradient
         const canvas = document.getElementById("defaultCanvas0");
         const ctx = canvas.getContext("2d");
-        let gradient = ctx.createLinearGradient(0,cardSize*(0.2-this.hoverAmnt*0.7),0,cardSize*(0.5001 - this.hoverAmnt));
+        let gradient = ctx.createLinearGradient(0,cardSize*(0.1-this.hoverAmnt*0.6),0,cardSize*(0.5001 - this.hoverAmnt));
         gradient.addColorStop(0, color(0, 0));
         gradient.addColorStop(1, color(0, 230));
         ctx.fillStyle = gradient;
         noStroke();
         rectMode(CORNER);
-        rect(-cardSize/2,cardSize*(0.2-this.hoverAmnt*0.7),cardSize,cardSize*(0.3+ this.hoverAmnt*0.7)+0.5);
+        rect(-cardSize/2,cardSize*(0.1-this.hoverAmnt*0.6),cardSize,cardSize*(0.4+ this.hoverAmnt*0.6)+0.5);
 
         // Name
         fill(255);
@@ -85,7 +98,7 @@ class ProjectCard {
         if(this.isUnderMouse()) {
             if(!this.isHovering) {
                 this.targetHoverAmnt = 1;
-                cursor('pointer');
+                if(this.link != "") cursor('pointer');
             }
             this.isHovering = true;
         } else {
