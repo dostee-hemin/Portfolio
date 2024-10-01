@@ -1,8 +1,8 @@
 class BackgroundPiece {
-    constructor() {
+    constructor(isMoving) {
         this.angle;
         this.distanceFromCenter;
-        this.location = createVector();
+        this.location = new p5.Vector();
 
         // Choose a random Tetris piece and give it a random rotation
         this.pieceType = int(random(7));
@@ -17,6 +17,15 @@ class BackgroundPiece {
         // Pick a standard color for all pieces and assign it to the current stroke color
         this.baseColor = color(18, 74, 161);
         this.strokeColor = this.baseColor;
+
+        this.isMoving = isMoving;
+        if(isMoving) {
+            pieceBaseLength = unitSize*4
+            let cols = width/pieceBaseLength;
+            this.location = new p5.Vector(round(random(cols))*pieceBaseLength, -pieceBaseLength*4);
+            this.angle = floor(random(4))*HALF_PI;
+            this.currentScale = 1;
+        }
     }
 
     // Sets the values related to how the piece is shown in the pattern,
@@ -33,7 +42,7 @@ class BackgroundPiece {
         this.strokeColor = this.baseColor;
         strokeWeight(1);
         // Based on the distance to the mouse (value from 0-1), highlight the piece with size and color
-        if(mousePos.x != 0 || mousePos.y-window.scrollY/2 != 0) {
+        if(mousePos.x != 0 || mousePos.y-window.scrollY/2 != 0 && !this.isMoving) {
             let closeness = this.getClosenessProportion();
             if (closeness > 0) {
                 let assignedColor = colors[this.pieceType];
@@ -71,10 +80,17 @@ class BackgroundPiece {
 
     // Update the display values over time
     update() {
+        this.rotation = lerp(this.rotation, this.targetRotation, 0.1);
+
+        if(this.isMoving) {
+            this.location.y += pieceBaseLength/10;
+
+            if(random(1) < 0.01) this.targetRotation += (round(random(1))*2 - 1) * HALF_PI;
+            return;
+        }
+
         this.targetScale = map(this.distanceFromCenter,0,max(width,height)/2,0,0.5)+0.5;
         this.currentScale = lerp(this.currentScale, this.targetScale, 0.04);
-
-        this.rotation = lerp(this.rotation, this.targetRotation, 0.1);
     }
 
     // Returns a floating point value that represents how close the piece is to the mouse

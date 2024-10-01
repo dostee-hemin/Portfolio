@@ -14,8 +14,12 @@ let smallestDimension;
 let largestDimension;
 let unitSize;
 
+let isMobileDevice = false;
+let mobileTetrisPieces = [];
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  isMobileDevice = displayWidth < displayHeight;
   
   windowResized();
   setupTetrisPattern();
@@ -26,7 +30,31 @@ function setup() {
 
 function draw() {
   background(3, 15, 34);
+  if(isMobileDevice) {
+    if(frameCount % 30 == 0) {
+      mobileTetrisPieces.push(new BackgroundPiece(true));
+    }
+    
+    // Loop through all background pieces to update and display them
+    for(let i=mobileTetrisPieces.length-1; i>=0; i--) {
+      let piece = mobileTetrisPieces[i];
+      // Assign the values of the current piece and display it to the screen
+      piece.update();
+      piece.display();
+      if(piece.location.y > height+pieceBaseLength*4) mobileTetrisPieces.splice(i,1);
+    }
 
+    fill(255);
+    noStroke();
+    textFont(fontBold);
+    textSize(unitSize*7);
+    textAlign(CENTER, CENTER);
+    text("Whoops!", width/2, windowHeight/2);
+    textFont(fontRegular);
+    textSize(unitSize*3);
+    text("The mobile version of this website is currently in development...\nTry opening this page on your desktop.", width/2, windowHeight/2+unitSize*10)
+    return;
+  }
 
   if(pmouseX != mouseX || pmouseY != mouseY) mousePos = {"x": mouseX, "y": mouseY}
   else mousePos.y += window.scrollY-prevScrollY;
@@ -135,7 +163,7 @@ function draw() {
 
 function windowResized() {
   // Change the width of the screen
-  resizeCanvas(windowWidth, height);
+  if(!isMobileDevice) resizeCanvas(windowWidth, height);
   // Reset the calculation of where the lowest point on the page is
   lowestYCoordinate = 0;
 
@@ -152,7 +180,7 @@ function windowResized() {
   setupExperienceTree();
   setupSocialLinks();
 
-  resizeCanvas(width, lowestYCoordinate);
+  if(!isMobileDevice) resizeCanvas(width, lowestYCoordinate);
 
   if (animator != null)
   animator.endStartUpAnimation();
