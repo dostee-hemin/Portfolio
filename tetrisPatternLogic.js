@@ -27,19 +27,21 @@ function setupTetrisPattern() {
     highlightRadius = unitSize*30;
     targetPatternRadius = unitSize*3.21;
 
-    // Create a bunch of new background pieces
-    for(let i=0; i<numberOfBackgroundPieces; i++) {
-        backgroundPieces.push(new BackgroundPiece());
-    }
+    if(frameCount == 0) {
+        // Create a bunch of new background pieces
+        for(let i=0; i<numberOfBackgroundPieces; i++) {
+            backgroundPieces.push(new BackgroundPiece());
+        }
 
-    // Assign the piece colors here
-    colors.push(color(255,255,0));  // O
-    colors.push(color(0,255,255));  // I
-    colors.push(color(255,0,255));  // T
-    colors.push(color(0,255,0));    // Z
-    colors.push(color(255,0,0));    // S
-    colors.push(color(255,100,0));  // J
-    colors.push(color(0,0,255));    // L
+        // Assign the piece colors here
+        colors.push(color(255,255,0));  // O
+        colors.push(color(0,255,255));  // I
+        colors.push(color(255,0,255));  // T
+        colors.push(color(0,255,0));    // Z
+        colors.push(color(255,0,0));    // S
+        colors.push(color(255,100,0));  // J
+        colors.push(color(0,0,255));    // L
+    }
 }
 
 // Function to display the Tetris pattern and animate it

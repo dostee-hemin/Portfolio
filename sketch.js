@@ -147,11 +147,15 @@ function windowResized() {
   unitSize = largestDimension*0.005;
   
   // Setup all parts of the scene again with the new screen dimensions
+  setupTetrisPattern();
   setupProjectsSection();
   setupExperienceTree();
   setupSocialLinks();
 
   resizeCanvas(width, lowestYCoordinate);
+
+  if (animator != null)
+  animator.endStartUpAnimation();
 }
 
 // Function called once every time the mouse is pressed

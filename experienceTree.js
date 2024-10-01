@@ -2,10 +2,8 @@ let experiencesJSON;
 let experiences = [];
 let topMostY;
 
-function setupExperienceTree() {
-    experiences = [];
-    
-    topMostY = lowestYCoordinate-triangleHeight-parallaxPosition;
+function setupExperienceTree() {    
+    topMostY = lowestYCoordinate-triangleHeight;
     for(let i=0; i<experiencesJSON.length; i++) {
         let visibility = 0;
         let x = widthDiv2;
@@ -14,7 +12,11 @@ function setupExperienceTree() {
             y+=unitSize*40;
             visibility = (i%2 == 0)?-1:1;
         }
-        experiences.push(new Experience(x,y,visibility,experiencesJSON[i]));
+        if(frameCount == 0) experiences.push(new Experience(x,y,visibility,experiencesJSON[i]));
+        else {
+           
+            experiences[i].setResolutionValues(x,y);
+        }
     }
 
     lowestYCoordinate += experiencesJSON.length*unitSize*45+unitSize*140;
@@ -53,8 +55,6 @@ function drawExperienceTree() {
 
 class Experience {
     constructor(x, y, visibility, info) {
-        this.x = x
-        this.y = y;
         this.visibility = visibility;
         this.leaves = []
         this.branchPoints = []
@@ -63,14 +63,32 @@ class Experience {
         this.targetAngle = PI/8;
         this.isAnimating = false;
         this.isHovering = false;
-        this.branchLength = unitSize*10;
         this.info = info
         this.targetAnimationAmount = 0;
         this.animationAmount = this.targetAnimationAmount;
-
+        
         this.isNewLeaves = true;
         this.leafIndex = 0;
         this.tween = p5.tween.manager.addTween(this);
+        this.setResolutionValues(x,y);
+    }
+
+    setResolutionValues(x,y) {
+        this.x = x
+        this.y = y;
+        this.branchLength = unitSize*10;
+        this.createBranchesAndLeaves();
+    }
+
+    createBranchesAndLeaves() {
+        // Contains information about where and how to draw the leaves and branches from the recursive generation
+        this.branchPoints = []
+
+        // Calculate where all the leaves and branches should be
+        let rootAngle = this.visibility * this.fractalAngle/this.targetAngle * 0.175;
+        this.leafIndex = 0;
+        this.makeBranch(this.branchLength,rootAngle,0,0);
+        this.isNewLeaves = false;
     }
 
     drawBranches() {
@@ -146,16 +164,7 @@ class Experience {
         }
 
         // Only calculate the position and details of the branches and leaves when the tree is being animated
-        if (this.fractalAngle != this.targetAngle) {
-            // Contains information about where and how to draw the leaves and branches from the recursive generation
-            this.branchPoints = []
-
-            // Calculate where all the leaves and branches should be
-            let rootAngle = this.visibility * this.fractalAngle/this.targetAngle * 0.175;
-            this.leafIndex = 0;
-            this.makeBranch(this.branchLength,rootAngle,0,0);
-            this.isNewLeaves = false;
-        }
+        if (this.fractalAngle != this.targetAngle) this.createBranchesAndLeaves();
 
         // Draw all the text information
         let textX = this.visibility * unitSize*5;
@@ -256,6 +265,26 @@ class Experience {
                 cursor(ARROW);
             }
             this.isHovering = false;
+        }
+    }
+
+    endAnimation() {
+        if (window.scrollY+windowHeight*0.4 >=  this.y-unitSize*90) {
+            if(!this.isAnimating) {
+                this.tween.pause();
+                this.tween = p5.tween.manager.addTween(this)
+                .addMotion('fractalAngle', this.targetAngle, 1000, "easeInOutCubic")
+                .startTween();
+            }
+            this.isAnimating = true;
+        } else {
+            if(this.isAnimating) {
+                this.tween.pause();
+                this.tween = p5.tween.manager.addTween(this)
+                .addMotion('fractalAngle', this.startingAngle, 1000, "easeInOutCubic")
+                .startTween();
+            }
+            this.isAnimating = false;
         }
     }
 
