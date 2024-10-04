@@ -181,7 +181,9 @@ function mousePressed() {
   if(mouseButton != LEFT) return;
   // If the user clicks on a card that's being hovered, move to the link related to that card
   for(let i=0; i<cards.length; i++) {
-    if(cards[i].isUnderMouse()) window.location.href = cards[i].link;
+    if(cards[i].isUnderMouse()) {
+      if (cards[i].link != "") window.location.href = cards[i].link;
+    }
   }
 
   for(let i=0; i<socialLinks.length; i++) {
