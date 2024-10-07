@@ -60,7 +60,7 @@ class ProjectCard {
         // Description
         noStroke();
         fill(220, map(this.hoverAmnt,0.7,1,0,255));
-        textSize(unitSize*1.8);
+        textSize(unitSize*2);
         textAlign(LEFT,TOP);
         textFont(fontRegular);
         let fittedText = "";
