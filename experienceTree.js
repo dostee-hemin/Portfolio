@@ -7,7 +7,7 @@ function setupExperienceTree() {
     for(let i=0; i<experiencesJSON.length; i++) {
         let visibility = 0;
         let x = widthDiv2;
-        let y = topMostY+i*unitSize*45+unitSize*120;
+        let y = topMostY+i*unitSize*45+unitSize*130;
         if(i != 0) {
             y+=unitSize*40;
             visibility = (i%2 == 0)?-1:1;
@@ -30,13 +30,13 @@ function drawExperienceTree() {
     gradient.addColorStop(0.6, color(15,10,20));
     gradient.addColorStop(1, color(0,5,5));
     ctx.fillStyle = gradient;
-    rect(0,topMostY,width,topMostY+experiencesJSON.length*unitSize*45 + unitSize*120);
+    rect(0,topMostY,width,topMostY+experiencesJSON.length*unitSize*45 + unitSize*130);
 
     textFont(fontBold);
     fill(255);
     noStroke();
     textSize(unitSize*4);
-    textAlign(CENTER,TOP);
+    textAlign(CENTER,CENTER);
     text("Experiences and Education", widthDiv2, topMostY+triangleHeight);
 
 
@@ -49,7 +49,7 @@ function drawExperienceTree() {
     stroke(255);
     for(let y=0;y<experiencesJSON.length*unitSize*45;y+=unitSize) {
         strokeWeight(map(y,0,experiencesJSON.length*unitSize*45,unitSize*0.7,unitSize*3));
-        line(widthDiv2,topMostY+unitSize*120+y,widthDiv2,topMostY+unitSize*122+y);
+        line(widthDiv2,topMostY+unitSize*130+y,widthDiv2,topMostY+unitSize*132+y);
     }
 }
 

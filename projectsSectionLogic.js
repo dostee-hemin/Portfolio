@@ -11,8 +11,8 @@ let numColumns;
 let cards=[];
 
 function setupProjectsSection() {
-    cardSize = unitSize*35;
-    triangleHeight = unitSize*15;
+    cardSize = unitSize*41;
+    triangleHeight = unitSize*25;
 
     cards = [];
     categoryBaseHeight = cardSize * 1.3;

@@ -10,11 +10,39 @@
                 "image_name":""
             },
             {
+                "name":"Language Lesson Generator",
+                "description":"An LLM-based script generater for a language-learning audio course that utilizes teaching best practices and approaches to create personalized and varied lessons.",
+                "tools":["Claude 3.5 Sonnet API", "Google Colab", "Python"],
+                "link":"",
+                "image_name":""
+            },
+            {
                 "name":"Book Cover Generator",
                 "description":"A tool to generate unique book covers for books utilizing large language models (Gemini API) and image generation (Stable Diffusion).",
                 "tools":["Gemini API", "Stable Diffusion", "Google Cloud Platform", "Python"],
                 "link":"",
                 "image_name":""
+            },
+            {
+                "name":"Document Layout Analysis",
+                "description":"Trained a machine learning model to recognize the layout and sections of a newspaper image taken from a camera",
+                "tools":["Processing", "Synthetic Dataset Generation", "TensorFlow", "Object Detection"],
+                "link":"",
+                "image_name":"dla.png"
+            },
+            {
+                "name":"Flappy Bird AI",
+                "description":"Traning a batch of bird agents using neuro-evolution to optimally play flappy bird and survive the longest.",
+                "tools":["Processing", "Genetic Algorithms", "Neural Networks", "Neuro-Evolution"],
+                "link":"",
+                "image_name":"flappy_bird.png"
+            },
+            {
+                "name":"Smart Rockets",
+                "description":"Training a batch of rocket agents using a genetic algorithm to reach a target destination before the time runs out.",
+                "tools":["Processing", "Genetic Algorithms"],
+                "link":"",
+                "image_name":"smart_rockets.png"
             }
         ]
     },
@@ -31,7 +59,7 @@
             {
                 "name":"TetrisGo",
                 "description":"A rhythm game utilizing pose detection to make the player dance to the beat of the music to play a game of Tetris.",
-                "tools":["MediaPipe Pose API", "p5.JS", "HTML", "JavaScript"],
+                "tools":["MediaPipe Pose API", "p5.JS", "HTML", "JavaScript", "Genetic Algorithms"],
                 "link":"https://github.com/dostee-hemin/TetrisGo",
                 "image_name":"tetris_go.png"
             },
@@ -55,6 +83,34 @@
                 "tools":["Processing", "Java"],
                 "link":"",
                 "image_name":"net_attack.png"
+            },
+            {
+                "name":"Word Search",
+                "description":"A simple word search puzzle game that creates a unique board every time you run it.",
+                "tools":["Processing", "Java"],
+                "link":"https://github.com/dostee-hemin/Word-Search-with-Processing",
+                "image_name":"word_search.png"
+            },
+            {
+                "name":"Snakes and Ladders",
+                "description":"A multiplayer game of snakes and ladders where the board is always uniquely generated.",
+                "tools":["Processing", "Java"],
+                "link":"https://github.com/dostee-hemin/Snakes-and-Ladders-with-Processing",
+                "image_name":"snakes_and_ladders.png"
+            },
+            {
+                "name":"NES Tetris Emulator",
+                "description":"Recreated NES Tetris in Processing as a quick fun way of playing the classic game we all know and love.",
+                "tools":["Processing", "Java"],
+                "link":"https://github.com/dostee-hemin/NES-Tetris-Emulator-with-Processing",
+                "image_name":"nes_tetris.png"
+            },
+            {
+                "name":"Frogger",
+                "description":"A simple frogger game with various obstacles, coin collectables, and boosts that create a fast paced and engaging experience.",
+                "tools":["Processing", "Java"],
+                "link":"https://github.com/dostee-hemin/Frogger-with-Processing",
+                "image_name":"frogger.png"
             }
         ]
     },
@@ -81,6 +137,13 @@
                 "tools":["Processing"],
                 "link":"",
                 "image_name":"photo_mosaic.png"
+            },
+            {
+                "name":"Suli Metro Application",
+                "description":"An application that shows you the quickest path and each step from point A to point B using a hypothetical metro system in Sulaimani.",
+                "tools":["Multi-Processing", "A-Star Pathfinding", "Web Scraping", "Processing", "Java"],
+                "link":"https://github.com/dostee-hemin/Suli-Metro-Application",
+                "image_name":"metro_router.png"
             }
         ]
     }

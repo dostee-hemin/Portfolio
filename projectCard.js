@@ -46,6 +46,11 @@ class ProjectCard {
         rect(-cardSize/2,cardSize*(0.1-this.hoverAmnt*0.6),cardSize,cardSize*(0.4+ this.hoverAmnt*0.6)+0.5);
 
         // Name
+        fill(0);
+        textSize(map(this.name.length,1,20,unitSize*3.2,unitSize*2.2));
+        textAlign(LEFT,CENTER);
+        textFont(fontBold);
+        text(this.name, cardSize*-0.4+unitSize*0.2, cardSize*(0.37 - this.hoverAmnt*0.7)+unitSize*0.2);
         fill(255);
         textSize(map(this.name.length,1,20,unitSize*3.2,unitSize*2.2));
         textAlign(LEFT,CENTER);
@@ -53,6 +58,7 @@ class ProjectCard {
         text(this.name, cardSize*-0.4, cardSize*(0.37 - this.hoverAmnt*0.7));
 
         // Description
+        noStroke();
         fill(220, map(this.hoverAmnt,0.7,1,0,255));
         textSize(unitSize*1.8);
         textAlign(LEFT,TOP);
@@ -67,7 +73,7 @@ class ProjectCard {
 
         let toolX = cardSize*-0.4+unitSize;
         let toolY = cardSize*0.3;
-        textSize(unitSize*1.4);
+        textSize(cardSize*0.04);
         textAlign(LEFT,CENTER);
         textFont(fontBold);
         for(let i=0; i<this.tools.length; i++) {
@@ -78,8 +84,8 @@ class ProjectCard {
                 toolY += textAscent(tool)*2;
             }
 
-            stroke(130,map(this.hoverAmnt,0.7,1,0,255));
-            strokeWeight(unitSize*2);
+            stroke(100,map(this.hoverAmnt,0.7,1,0,255));
+            strokeWeight(textAscent(tool)*1.5);
             line(toolX,toolY,toolX+textWidth(tool),toolY);
             
             noStroke();
