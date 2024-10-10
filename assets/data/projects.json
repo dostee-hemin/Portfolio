@@ -65,7 +65,7 @@
             },
             {
                 "name":"Music Rewind",
-                "description":"A puzzle platformer game that uses rewinding powers and background music to control the level.",
+                "description":"A puzzle platformer game that uses rewinding powers and background music to control the level, made for the Brackeys 2020 Game Jam.",
                 "tools":["Processing", "Box2D Physics Library"],
                 "link":"https://dostee-hemin.itch.io/music-rewind",
                 "image_name":"music_rewind.png"
