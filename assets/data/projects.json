@@ -52,7 +52,7 @@
             {
                 "name":"Dolus",
                 "description":"A murder-mystery game utilizing large language models to simulate the thought, emotion, and reaction of virtual characters.",
-                "tools":["Godot", "GDScript", "Github Desktop"],
+                "tools":["Godot", "Prompt Engineering", "Multi-Processing", "Git and Github"],
                 "link":"https://github.com/dostee-hemin/Dolus",
                 "image_name":"dolus.png"
             },
