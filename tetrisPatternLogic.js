@@ -70,7 +70,7 @@ function drawTetrisPattern() {
       let currentAngle = i * radians(deltaAngle);             //Calculate the angle using the equation
 
       // Don't show any pieces that would be under the profile image
-      if (distanceFromCenter < animator.profileImageSize/2 && animator.profileImageOffset < unitSize*4) continue;
+      if (distanceFromCenter < animator.profileImageSize*unitSize*12.5 && animator.profileImageOffset < unitSize*4) continue;
       
       // Calculate the "x" and "y" poition using Polar to Carteasian transformations
       let x = distanceFromCenter * cos(currentAngle) + widthDiv2;

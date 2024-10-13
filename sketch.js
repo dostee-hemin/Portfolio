@@ -46,14 +46,17 @@ function draw() {
     drawTetrisPattern();
 
     // Profile image and outline
+    push();
+    translate(widthDiv2, heightDiv2-animator.profileImageOffset)
+    scale(animator.profileImageSize);
     imageMode(CENTER);
-    tint(255,animator.profileImageAlpha);
-    image(profileImage, widthDiv2, heightDiv2-animator.profileImageOffset, animator.profileImageSize, animator.profileImageSize);
+    image(profileImage,0,0);
     noFill();
     stroke(0,0,20);
     strokeWeight(width*0.004);
-    ellipse(widthDiv2, heightDiv2-animator.profileImageOffset, animator.profileImageSize, animator.profileImageSize);
-    
+    circle(0,0, unitSize*25);
+    pop();
+
     // Title text and subtitle text
     noStroke();
     fill(255, animator.titleTextAlpha);
@@ -134,13 +137,15 @@ function windowResized() {
   resizeCanvas(windowWidth, height);
   // Reset the calculation of where the lowest point on the page is
   lowestYCoordinate = 0;
-
+  
   // Calculate all the resolution variables again
   widthDiv2 = width/2;
   heightDiv2 = windowHeight/2;
   smallestDimension = min(width,windowHeight);
   largestDimension = max(width,windowHeight);
-  unitSize = smallestDimension*0.011
+  if (isMobileDevice) unitSize = smallestDimension*0.014
+  else unitSize = smallestDimension*0.011
+  profileImage.resize(unitSize*25,unitSize*25)
   
   // Setup all parts of the scene again with the new screen dimensions
   setupTetrisPattern();

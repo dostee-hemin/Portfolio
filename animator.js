@@ -38,10 +38,10 @@ class Animator {
         
         this.all_tweens.push(p5.tween.manager.addTween(this)
             .addMotions([
-                { key: 'profileImageSize', target: unitSize*25},
+                { key: 'profileImageSize', target: 1},
                 { key: 'profileImageAlpha', target: 255}
             ], 1000, "easeOutQuad")
-            .addMotion('profileImageSize',unitSize*25, 1000)
+            .addMotion('profileImageSize',1, 1000)
             .addMotion('profileImageOffset',unitSize*10, 1500,"easeInOutSin")
             .startTween());
         
