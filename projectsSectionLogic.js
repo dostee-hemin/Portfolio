@@ -64,7 +64,7 @@ function drawProjectsSection() {
         noStroke();
         textSize(unitSize*4);
         textAlign(i%2 == 0 ? LEFT : RIGHT,CENTER);
-        text(categories[i].name,i%2 == 0 ? unitSize*6 : width-unitSize*6,startingY+triangleHeight*0.8);
+        text(categories[i].name,i%2 == 0 ? unitSize*6 : width-unitSize*6,startingY+triangleHeight*0.9);
 
         startingY += categoryHeight+triangleHeight;
     }
