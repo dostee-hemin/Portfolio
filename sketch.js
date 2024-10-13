@@ -21,7 +21,6 @@ function setup() {
   isMobileDevice = displayWidth < displayHeight;
   
   windowResized();
-  if(isMobileDevice) pixelDensity(1);
   setupTetrisPattern();
 
   animator = new Animator();
