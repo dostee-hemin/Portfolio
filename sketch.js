@@ -18,8 +18,7 @@ let mobileTetrisPieces = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  // isMobileDevice = displayWidth < displayHeight;
-  isMobileDevice = true;
+  isMobileDevice = displayWidth < displayHeight;
   
   windowResized();
   setupTetrisPattern();
