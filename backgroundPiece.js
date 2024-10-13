@@ -1,5 +1,5 @@
 class BackgroundPiece {
-    constructor(isMoving) {
+    constructor() {
         this.angle;
         this.distanceFromCenter;
         this.location = new p5.Vector();
@@ -17,15 +17,6 @@ class BackgroundPiece {
         // Pick a standard color for all pieces and assign it to the current stroke color
         this.baseColor = color(18, 74, 161);
         this.strokeColor = this.baseColor;
-
-        this.isMoving = isMoving;
-        if(isMoving) {
-            pieceBaseLength = unitSize*4
-            let cols = width/pieceBaseLength;
-            this.location = new p5.Vector(round(random(cols))*pieceBaseLength, -pieceBaseLength*4);
-            this.angle = floor(random(4))*HALF_PI;
-            this.currentScale = 1;
-        }
     }
 
     // Sets the values related to how the piece is shown in the pattern,
@@ -39,27 +30,30 @@ class BackgroundPiece {
     display() {
         // Translate and rotate to the appropriate location
         let interactionScale = 0;
+        let closeness = 0
         this.strokeColor = this.baseColor;
         strokeWeight(1);
-        // Based on the distance to the mouse (value from 0-1), highlight the piece with size and color
-        if(mousePos.x != 0 || mousePos.y-window.scrollY/2 != 0 && !this.isMoving) {
-            let closeness = this.getClosenessProportion();
-            if (closeness > 0) {
-                let assignedColor = colors[this.pieceType];
-                let colorDifferences = [
-                    red(assignedColor)-red(this.baseColor),
-                    green(assignedColor)-green(this.baseColor),
-                    blue(assignedColor)-blue(this.baseColor)
-                ];
-                let fadedColor = color(
-                    red(this.baseColor)+colorDifferences[0]*closeness,
-                    green(this.baseColor)+colorDifferences[1]*closeness,
-                    blue(this.baseColor)+colorDifferences[2]*closeness,
-                );
-                this.strokeColor = fadedColor;
-                strokeWeight(1+closeness);
-                interactionScale = closeness/3;
-            }
+
+        // Calculate the closeness based on either the distance to the ripple (mobile) or distance to mouse (desktop)
+        if (isMobileDevice) closeness = this.twistScale*2
+        else if(mousePos.x != 0 || mousePos.y-window.scrollY/2 != 0) closeness = this.getClosenessProportion();
+        
+        // Show the true color of the piece based on the closeness value
+        if (closeness > 0) {
+            let assignedColor = colors[this.pieceType];
+            let colorDifferences = [
+                red(assignedColor)-red(this.baseColor),
+                green(assignedColor)-green(this.baseColor),
+                blue(assignedColor)-blue(this.baseColor)
+            ];
+            let fadedColor = color(
+                red(this.baseColor)+colorDifferences[0]*closeness,
+                green(this.baseColor)+colorDifferences[1]*closeness,
+                blue(this.baseColor)+colorDifferences[2]*closeness,
+            );
+            this.strokeColor = fadedColor;
+            strokeWeight(1+closeness);
+            interactionScale = closeness/4;
         }
 
         // Display the piece according to which type it is
@@ -81,13 +75,6 @@ class BackgroundPiece {
     // Update the display values over time
     update() {
         this.rotation = lerp(this.rotation, this.targetRotation, 0.1);
-
-        if(this.isMoving) {
-            this.location.y += pieceBaseLength/10;
-
-            if(random(1) < 0.01) this.targetRotation += (round(random(1))*2 - 1) * HALF_PI;
-            return;
-        }
 
         this.targetScale = map(this.distanceFromCenter,0,max(width,height)/2,0,0.5)+0.5;
         this.currentScale = lerp(this.currentScale, this.targetScale, 0.04);

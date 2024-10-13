@@ -9,7 +9,7 @@ class ProjectCard {
         this.tools = project_info.tools;
         this.link = project_info.link;
         
-        this.hoverAmnt = 0;
+        this.hoverAmnt = isMobileDevice ? 1 : 0;
         this.targetHoverAmnt = 0;
         this.isHovering = false;
     }
@@ -17,6 +17,22 @@ class ProjectCard {
     display() {
         push()
         translate(this.x, this.y - this.hoverAmnt * 20);
+
+        if(isMobileDevice) {
+            fill(0,150);
+            noStroke();
+            rectMode(CENTER);
+            rect(0,cardSize*0.5,cardSize*1.1,cardSize*2.1, unitSize*2);
+
+            if(this.link != "") {
+                fill(255);
+                noStroke();
+                textSize(unitSize*2);
+                textFont(fontItalic);
+                textAlign(CENTER,CENTER);
+                text("Go to page...", 0, cardSize*1.45)
+            }
+        }
         
         if(this.img == null) {
             const canvas = document.getElementById("defaultCanvas0");
@@ -34,16 +50,18 @@ class ProjectCard {
             image(this.img, 0, 0);
         }
         
-        // Black gradient
-        const canvas = document.getElementById("defaultCanvas0");
-        const ctx = canvas.getContext("2d");
-        let gradient = ctx.createLinearGradient(0,cardSize*(0.1-this.hoverAmnt*0.6),0,cardSize*(0.5001 - this.hoverAmnt));
-        gradient.addColorStop(0, color(0, 0));
-        gradient.addColorStop(1, color(0, 230));
-        ctx.fillStyle = gradient;
-        noStroke();
-        rectMode(CORNER);
-        rect(-cardSize/2,cardSize*(0.1-this.hoverAmnt*0.6),cardSize,cardSize*(0.4+ this.hoverAmnt*0.6)+0.5);
+        if(!isMobileDevice) {
+            // Black gradient
+            const canvas = document.getElementById("defaultCanvas0");
+            const ctx = canvas.getContext("2d");
+            let gradient = ctx.createLinearGradient(0,cardSize*(0.1-this.hoverAmnt*0.6),0,cardSize*(0.5001 - this.hoverAmnt));
+            gradient.addColorStop(0, color(0, 0));
+            gradient.addColorStop(1, color(0, 230));
+            ctx.fillStyle = gradient;
+            rectMode(CORNER);
+            noStroke();
+            rect(-cardSize/2,cardSize*(0.1-this.hoverAmnt*0.6),cardSize,cardSize*(0.4+ this.hoverAmnt*0.6)+0.5);
+        } else translate(0,cardSize*0.95)
 
         // Name
         fill(0);
@@ -99,6 +117,8 @@ class ProjectCard {
     }
 
     update() {
+        if(isMobileDevice) return;
+
         this.hoverAmnt = lerp(this.hoverAmnt, this.targetHoverAmnt, 0.1);
 
         if(this.isUnderMouse()) {
@@ -117,10 +137,10 @@ class ProjectCard {
     }
 
     isUnderMouse() {
-        return mousePos.x > this.x-cardSize/2 && mousePos.x < this.x+cardSize/2 && mousePos.y > this.y-cardSize/2 && mousePos.y < this.y+cardSize/2;
+        return mousePos.x > this.x-cardSize/2 && mousePos.x < this.x+cardSize/2 && mousePos.y > this.y-cardSize/2 && mousePos.y < this.y+cardSize/2+(isMobileDevice?cardSize:0);
     }
 
     isNotVisible() {
-        return window.scrollY > this.y+cardSize/2 || window.scrollY+windowHeight < this.y-cardSize/2;
+        return window.scrollY > this.y+cardSize/2+(isMobileDevice?cardSize:0) || window.scrollY+windowHeight < this.y-cardSize/2;
     }
 }

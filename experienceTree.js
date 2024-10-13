@@ -6,9 +6,10 @@ function setupExperienceTree() {
     topMostY = lowestYCoordinate-triangleHeight;
     for(let i=0; i<experiencesJSON.length; i++) {
         let visibility = 0;
-        let x = widthDiv2;
-        let y = topMostY+i*unitSize*45+unitSize*130;
-        if(i != 0) {
+        let x = isMobileDevice ? width*0.1 : widthDiv2;
+        let y = topMostY+i*unitSize*(isMobileDevice?80:45)+unitSize*130;
+        if(isMobileDevice) visibility = 1
+        else if(i != 0) {
             y+=unitSize*40;
             visibility = (i%2 == 0)?-1:1;
         }
@@ -19,18 +20,18 @@ function setupExperienceTree() {
         }
     }
 
-    lowestYCoordinate += experiencesJSON.length*unitSize*45+unitSize*140;
+    lowestYCoordinate += experiencesJSON.length*unitSize*(isMobileDevice?65:45)+unitSize*140;
 }
 
 function drawExperienceTree() {
     const canvas = document.getElementById("defaultCanvas0");
     const ctx = canvas.getContext("2d");
-    let gradient = ctx.createLinearGradient(width,topMostY,0,topMostY+experiencesJSON.length*unitSize*45 + unitSize*120);
+    let gradient = ctx.createLinearGradient(width,topMostY,0,topMostY+experiencesJSON.length*unitSize*(isMobileDevice?80:45) + unitSize*120);
     gradient.addColorStop(0, color(40,40,50));
     gradient.addColorStop(0.6, color(15,10,20));
     gradient.addColorStop(1, color(0,5,5));
     ctx.fillStyle = gradient;
-    rect(0,topMostY,width,topMostY+experiencesJSON.length*unitSize*45 + unitSize*130);
+    rect(0,topMostY,width,topMostY+experiencesJSON.length*unitSize*(isMobileDevice?65:45) + unitSize*130);
 
     textFont(fontBold);
     fill(255);
@@ -47,9 +48,10 @@ function drawExperienceTree() {
 
     // Draw the tree trunk at increasing thicknesses as you go down
     stroke(255);
-    for(let y=0;y<experiencesJSON.length*unitSize*45;y+=unitSize) {
-        strokeWeight(map(y,0,experiencesJSON.length*unitSize*45,unitSize*0.7,unitSize*3));
-        line(widthDiv2,topMostY+unitSize*130+y,widthDiv2,topMostY+unitSize*132+y);
+    for(let y=0;y<experiencesJSON.length*unitSize*(isMobileDevice?65:45);y+=unitSize) {
+        let x = isMobileDevice ? width*0.1 : widthDiv2;
+        strokeWeight(map(y,0,experiencesJSON.length*unitSize*(isMobileDevice?80:45),unitSize*0.7,unitSize*3));
+        line(x,topMostY+unitSize*130+y,x,topMostY+unitSize*132+y);
     }
 }
 
@@ -102,6 +104,13 @@ class Experience {
         if (this.leaves.length != 0) strokeWeight(this.leaves[0].lifetime * 10);
         for(let i=this.leaves.length-1; i>=0; i--) {
             let leaf = this.leaves[i];
+
+            if(isMobileDevice) {
+                stroke(10,140,50,200);
+                strokeWeight(leaf.thickness);
+                point(leaf.x, leaf.y);
+                continue;
+            }
 
             // If the leaf has faded away, remove it from the list
             if(leaf.isFinished()) this.leaves.splice(i,1);
@@ -175,7 +184,7 @@ class Experience {
         // Title
         fill(255, animationRatio*255);
         noStroke();
-        textSize((1-this.info['title'].length/30) * unitSize + unitSize*5);
+        textSize((1-this.info['title'].length/30) * unitSize + unitSize*(isMobileDevice?4:5));
         textFont(fontBold);
         textAlign(textAlignment,CENTER);
         text(this.info['title'], textX, (1-animationRatio)*unitSize*5);
@@ -200,7 +209,7 @@ class Experience {
         let paragraphedDescription = ""
         let words = this.info['description'].split(" ");
         for(let i=0; i<words.length; i++) {
-            if(textWidth(paragraphedDescription + words[i] + " ") > unitSize*80) paragraphedDescription += "\n";
+            if(textWidth(paragraphedDescription + words[i] + " ") > (isMobileDevice?width*0.8:unitSize*80)) paragraphedDescription += "\n";
             paragraphedDescription += words[i] + " ";
         }
         text(paragraphedDescription, textX, unitSize*15+((1-max(animationRatio*2.5-1.5,0))*unitSize*5));
@@ -214,7 +223,7 @@ class Experience {
         for(let i=0; i<this.info['tags'].length; i++) {
             let tag = this.info['tags'][i];
 
-            if(tagX+textWidth(tag) > width*0.4) {
+            if(tagX+textWidth(tag) > width*(isMobileDevice?0.8:0.4)) {
                 tagX = 0;
                 tagRows.push([]);
             }

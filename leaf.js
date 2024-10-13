@@ -23,7 +23,8 @@ class Leaf {
 
         this.x = x;
         this.y = y;
-        this.thickness = map(Math.abs(x-widthDiv2),0,widthDiv2,0,1)*unitSize*2 + unitSize;
+        if(isMobileDevice) this.thickness = x/width*unitSize*2 + unitSize;
+        else this.thickness = map(Math.abs(x-widthDiv2),0,widthDiv2,0,1)*unitSize*2 + unitSize;
     }
 
     display() {

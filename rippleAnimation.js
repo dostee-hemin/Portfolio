@@ -3,6 +3,7 @@ class Ripple {
         this.location = createVector(x,y);
         this.radius = 0;
         this.growSpeed = unitSize*5;
+        if(isMobileDevice) this.growSpeed /= 5;
     }
 
     // Function called to increase the size of the ripple

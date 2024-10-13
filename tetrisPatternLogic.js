@@ -30,7 +30,7 @@ function setupTetrisPattern() {
     if(frameCount == 0) {
         // Create a bunch of new background pieces
         for(let i=0; i<numberOfBackgroundPieces; i++) {
-            backgroundPieces.push(new BackgroundPiece(false));
+            backgroundPieces.push(new BackgroundPiece());
         }
 
         // Assign the piece colors here

@@ -24,11 +24,11 @@ function setupProjectsSection() {
 
             let x = (width-unitSize*12)/numColumns * (project%numColumns+0.5) + unitSize*6;
             if (category%2 != 0) {x = width - x;}
-            let y = currentY+(int(project/numColumns)+0.5) * categoryBaseHeight;
+            let y = currentY+(int(project/numColumns)+0.5) * (isMobileDevice?1.7:1)*categoryBaseHeight;
 
             cards.push(new ProjectCard(x, y, currentProject));
         }
-        currentY += ceil(categories[category].projects.length/numColumns) * categoryBaseHeight + triangleHeight;
+        currentY += ceil(categories[category].projects.length/numColumns) * (isMobileDevice?1.8:1)*categoryBaseHeight + triangleHeight;
     }
 
     lowestYCoordinate = currentY-parallaxPosition-unitSize*50;
@@ -38,7 +38,7 @@ function drawProjectsSection() {
     // Variable that starts at the bottom of the screen and goes lower with each category
     let startingY = windowHeight;
     for(let i=0; i<categories.length; i++) {
-        let categoryHeight = ceil(categories[i].projects.length/numColumns) * categoryBaseHeight;
+        let categoryHeight = ceil(categories[i].projects.length/numColumns) * (isMobileDevice?1.8:1)*categoryBaseHeight;
         
         push();
         translate(i%2 == 0? 0 : width, startingY);
