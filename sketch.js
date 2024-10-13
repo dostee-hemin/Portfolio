@@ -140,7 +140,7 @@ function windowResized() {
   heightDiv2 = windowHeight/2;
   smallestDimension = min(width,windowHeight);
   largestDimension = max(width,windowHeight);
-  unitSize = smallestDimension*0.012
+  unitSize = smallestDimension*0.011
   
   // Setup all parts of the scene again with the new screen dimensions
   setupTetrisPattern();
