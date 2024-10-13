@@ -159,7 +159,10 @@ class Experience {
         }
         
         // If the branch has not grown yet, no need to display it
-        if(this.fractalAngle == this.startingAngle) return;
+        if(this.fractalAngle == this.startingAngle) {
+            if(isMobileDevice) this.leaves = [];
+            return;
+        }
         
         
         push();
@@ -184,13 +187,13 @@ class Experience {
         // Title
         fill(255, animationRatio*255);
         noStroke();
-        textSize((1-this.info['title'].length/30) * unitSize + unitSize*(isMobileDevice?4:5));
+        textSize((1-this.info['title'].length/30) * unitSize + unitSize*(isMobileDevice?3.2:5));
         textFont(fontBold);
         textAlign(textAlignment,CENTER);
         text(this.info['title'], textX, (1-animationRatio)*unitSize*5);
         // Place
         textFont(fontRegular);
-        textSize(unitSize*3.5);
+        textSize(unitSize*(isMobileDevice?3:3.5));
         fill(255-this.animationAmount*100,255-this.animationAmount*100,255, max(animationRatio*1.2-0.2,0)*255);
         text(this.info['place'], textX, unitSize*6+((1-max(animationRatio*1.2-0.2,0))*unitSize*5));
         // Duration
@@ -209,7 +212,7 @@ class Experience {
         let paragraphedDescription = ""
         let words = this.info['description'].split(" ");
         for(let i=0; i<words.length; i++) {
-            if(textWidth(paragraphedDescription + words[i] + " ") > (isMobileDevice?width*0.8:unitSize*80)) paragraphedDescription += "\n";
+            if(textWidth(paragraphedDescription + words[i] + " ") > (isMobileDevice?width*0.75:unitSize*80)) paragraphedDescription += "\n";
             paragraphedDescription += words[i] + " ";
         }
         text(paragraphedDescription, textX, unitSize*15+((1-max(animationRatio*2.5-1.5,0))*unitSize*5));
@@ -223,7 +226,7 @@ class Experience {
         for(let i=0; i<this.info['tags'].length; i++) {
             let tag = this.info['tags'][i];
 
-            if(tagX+textWidth(tag) > width*(isMobileDevice?0.8:0.4)) {
+            if(tagX+textWidth(tag) > width*(isMobileDevice?0.75:0.4)) {
                 tagX = 0;
                 tagRows.push([]);
             }
@@ -231,7 +234,7 @@ class Experience {
             tagRows[tagRows.length-1].push(tag)
             tagX += textWidth(tag) + unitSize*4;
         }
-        let tagY = unitSize*27;
+        let tagY = unitSize*(isMobileDevice?30:27);
         for(let row=0; row<tagRows.length; row++) {
             let totalWidth = 0;
             for (let i=0; i<tagRows[row].length; i++) {
@@ -329,7 +332,7 @@ class Experience {
         if (len < unitSize) return;
         
         // Skew the tree horizontally so that more horizontal branches are longer
-        const adjustedLength = len * (Math.cos(branchAngle)*-3.5+5);
+        const adjustedLength = len * (Math.cos(branchAngle)*-3.5+5)*(isMobileDevice?0.8:1);
 
         // Figure out where the end points of this branch are
         const xOffset = Math.sin(branchAngle)*adjustedLength;
