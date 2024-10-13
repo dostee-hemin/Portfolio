@@ -18,7 +18,8 @@ let mobileTetrisPieces = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  isMobileDevice = displayWidth < displayHeight;
+  // isMobileDevice = displayWidth < displayHeight;
+  isMobileDevice = true;
   
   windowResized();
   setupTetrisPattern();
@@ -30,34 +31,14 @@ function setup() {
 function draw() {
   background(3, 15, 34);
 
-  if(isMobileDevice) {
-    if(frameCount % 60 == 0) mobileTetrisPieces.push(new BackgroundPiece(true));
-    
-    // Loop through all background pieces to update and display them
-    for(let i=mobileTetrisPieces.length-1; i>=0; i--) {
-      let piece = mobileTetrisPieces[i];
-      // Assign the values of the current piece and display it to the screen
-      piece.update();
-      piece.display();
-      if(piece.location.y > height+pieceBaseLength*4) mobileTetrisPieces.splice(i,1);
-    }
-
-    fill(255);
-    noStroke();
-    textFont(fontBold);
-    textSize(width*0.08);
-    textAlign(CENTER, CENTER);
-    text("Whoops!", width/2, windowHeight/2);
-    textFont(fontRegular);
-    textSize(width*0.03);
-    text("The mobile version of this website is currently in development...\nTry opening this page on your desktop.", width/2, windowHeight/2+width*0.1)
-    return;
-  }
-
   if(pmouseX != mouseX || pmouseY != mouseY) mousePos = {"x": mouseX, "y": mouseY}
   else mousePos.y += window.scrollY-prevScrollY;
   parallaxPosition = max(map(window.scrollY,0,windowHeight/1.5,-unitSize*10,-unitSize*50),-unitSize*50);
   parallaxOffset = parallaxPosition - prevParallaxPosition;
+
+  if(isMobileDevice) {
+    if(frameCount % 200 == 0) ripples.push(new Ripple(width/2,heightDiv2-animator.profileImageOffset));
+  }
 
   if(window.scrollY < windowHeight) {
     push();
@@ -79,15 +60,15 @@ function draw() {
     textSize(unitSize*6);
     textAlign(CENTER,CENTER);
     textFont(fontBold);
-    text("Dostee Hemin", widthDiv2, heightDiv2 + width*0.073 - animator.titleTextOffset);
+    text("Dostee Hemin", widthDiv2, heightDiv2 + unitSize*14 - animator.titleTextOffset);
     fill(200, animator.subtitleTextAlpha);
     textSize(unitSize*3);
     textFont(fontRegular);
-    text("Software Engineer", widthDiv2, heightDiv2 + width*0.104 - animator.subtitleTextOffset);
+    text("Software Engineer", widthDiv2, heightDiv2 + unitSize*20 - animator.subtitleTextOffset);
 
     // Projects indicator arrow
     push();
-    translate(widthDiv2,heightDiv2+width*0.208-animator.projectsArrowOffset);
+    translate(widthDiv2,heightDiv2+unitSize*40-animator.projectsArrowOffset);
     stroke(200, animator.projectsArrowAlpha);
     strokeWeight(unitSize/2);
     let v1 = unitSize*3
@@ -150,7 +131,7 @@ function draw() {
 
 function windowResized() {
   // Change the width of the screen
-  if(!isMobileDevice) resizeCanvas(windowWidth, height);
+  resizeCanvas(windowWidth, height);
   // Reset the calculation of where the lowest point on the page is
   lowestYCoordinate = 0;
 
@@ -159,7 +140,7 @@ function windowResized() {
   heightDiv2 = windowHeight/2;
   smallestDimension = min(width,windowHeight);
   largestDimension = max(width,windowHeight);
-  unitSize = largestDimension*0.005;
+  unitSize = smallestDimension*0.012
   
   // Setup all parts of the scene again with the new screen dimensions
   setupTetrisPattern();
@@ -167,7 +148,7 @@ function windowResized() {
   setupExperienceTree();
   setupSocialLinks();
 
-  if(!isMobileDevice) resizeCanvas(width, lowestYCoordinate);
+  resizeCanvas(width, lowestYCoordinate);
 
   if (animator != null)
   animator.endStartUpAnimation();
@@ -176,7 +157,7 @@ function windowResized() {
 // Function called once every time the mouse is pressed
 function mousePressed() {
   // Start a new ripple animation at the cursor's current location
-  if(window.scrollY < windowHeight) ripples.push(new Ripple(mousePos.x,mousePos.y));
+  if(window.scrollY < windowHeight && !isMobileDevice) ripples.push(new Ripple(mousePos.x,mousePos.y));
 
   if(mouseButton != LEFT) return;
   // If the user clicks on a card that's being hovered, move to the link related to that card
