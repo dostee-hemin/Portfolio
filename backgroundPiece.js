@@ -36,7 +36,7 @@ class BackgroundPiece {
 
         // Calculate the closeness based on either the distance to the ripple (mobile) or distance to mouse (desktop)
         if (isMobileDevice) closeness = this.twistScale*2
-        else if(mousePos.x != 0 || mousePos.y-window.scrollY/2 != 0) closeness = this.getClosenessProportion();
+        else if(mousePos.x != 0 || mousePos.y-scrollY/2 != 0) closeness = this.getClosenessProportion();
         
         // Show the true color of the piece based on the closeness value
         if (closeness > 0) {
@@ -84,9 +84,9 @@ class BackgroundPiece {
     // (1 = right under the mouse, 0 = on the edge of the highlight zone, <0 = too far from mouse)
     getClosenessProportion() {
         // If the piece is too far away to be considered, leave the function
-        if(max(abs(this.location.x-mousePos.x),abs(this.location.y-mousePos.y+window.scrollY/2)) > highlightRadius) return -1;
+        if(max(abs(this.location.x-mousePos.x),abs(this.location.y-mousePos.y+scrollY/2)) > highlightRadius) return -1;
 
-        let distanceToMouse = this.getDistanceSquared(mousePos.x,mousePos.y-window.scrollY/2,this.location.x,this.location.y);
+        let distanceToMouse = this.getDistanceSquared(mousePos.x,mousePos.y-scrollY/2,this.location.x,this.location.y);
         return 1-distanceToMouse/(highlightRadius*highlightRadius);
     }
 

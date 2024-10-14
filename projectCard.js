@@ -141,6 +141,6 @@ class ProjectCard {
     }
 
     isNotVisible() {
-        return window.scrollY > this.y+cardSize/2+(isMobileDevice?cardSize:0) || window.scrollY+windowHeight < this.y-cardSize/2;
+        return scrollY > this.y+cardSize/2+(isMobileDevice?cardSize:0) || scrollY+windowHeight < this.y-cardSize/2;
     }
 }

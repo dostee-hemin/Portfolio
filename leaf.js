@@ -28,7 +28,7 @@ class Leaf {
     }
 
     display() {
-        if(this.x < 0 || this.x > width || this.y < window.scrollY || this.y > window.scrollY+windowHeight) return
+        if(this.x < 0 || this.x > width || this.y < scrollY || this.y > scrollY+windowHeight) return
         stroke(10,140,50,this.lifetime*200);
         strokeWeight(this.thickness);
         point(this.x, this.y);
