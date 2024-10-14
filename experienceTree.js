@@ -48,7 +48,7 @@ function drawExperienceTree() {
 
     // Draw the tree trunk at increasing thicknesses as you go down
     stroke(255);
-    for(let y=0;y<experiencesJSON.length*unitSize*(isMobileDevice?65:45);y+=unitSize) {
+    for(let y=isMobileDevice?-unitSize*39:0;y<experiencesJSON.length*unitSize*(isMobileDevice?65:45);y+=unitSize) {
         let x = isMobileDevice ? width*0.1 : widthDiv2;
         strokeWeight(map(y,0,experiencesJSON.length*unitSize*(isMobileDevice?80:45),unitSize*0.7,unitSize*3));
         line(x,topMostY+unitSize*130+y,x,topMostY+unitSize*132+y);
@@ -104,6 +104,7 @@ class Experience {
         if (this.leaves.length != 0) strokeWeight(this.leaves[0].lifetime * 10);
         for(let i=this.leaves.length-1; i>=0; i--) {
             let leaf = this.leaves[i];
+            if(isMobileDevice && leaf.x < width*0.105) continue;
 
             if(isMobileDevice) {
                 stroke(10,140,50,200);
@@ -130,17 +131,17 @@ class Experience {
             // If a stationary leaf gets brushed by the mouse, apply the wind force and launch it
             if(leaf.isUnderMouse() && leaf.isOnBranch) leaf.launch()
 
-            if(leaf.x < 0 || leaf.x > width || leaf.y < window.scrollY || leaf.y > window.scrollY+windowHeight) continue
+            if(leaf.x < 0 || leaf.x > width || leaf.y < scrollY || leaf.y > scrollY+windowHeight) continue
             leaf.display();
         }
 
 
         // If the branches are above the screen, no need to display it
-        if(window.scrollY > this.y && this.fractalAngle == this.targetAngle) return
+        if(scrollY > this.y && this.fractalAngle == this.targetAngle) return
         
 
         // Animate the branch to grow into view when the user has scrolled to the right point, and animate it to hide once the user leaves
-        if (window.scrollY+windowHeight*0.4 >=  this.y-unitSize*90) {
+        if (scrollY+windowHeight*0.4 >=  this.y-unitSize*90) {
             if(!this.isAnimating) {
                 this.tween.pause();
                 this.tween = p5.tween.manager.addTween(this)
@@ -281,7 +282,7 @@ class Experience {
     }
 
     endAnimation() {
-        if (window.scrollY+windowHeight*0.4 >=  this.y-unitSize*90) {
+        if (scrollY+windowHeight*0.4 >=  this.y-unitSize*90) {
             if(!this.isAnimating) {
                 this.tween.pause();
                 this.tween = p5.tween.manager.addTween(this)

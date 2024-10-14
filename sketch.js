@@ -6,6 +6,8 @@ let prevMousePos = {"x":0,"y":0};
 let prevScrollY;
 let prevParallaxPosition = 0;
 let parallaxPosition = 0;
+let scrollY = 0;
+let scrollSpeed = 0;
 
 let widthDiv2;
 let heightDiv2;
@@ -21,7 +23,6 @@ function setup() {
   isMobileDevice = displayWidth < displayHeight;
   
   windowResized();
-  if(isMobileDevice) pixelDensity(1);
   setupTetrisPattern();
 
   animator = new Animator();
@@ -32,17 +33,24 @@ function draw() {
   background(3, 15, 34);
 
   if(pmouseX != mouseX || pmouseY != mouseY) mousePos = {"x": mouseX, "y": mouseY}
-  else mousePos.y += window.scrollY-prevScrollY;
-  parallaxPosition = max(map(window.scrollY,0,windowHeight/1.5,-unitSize*10,-unitSize*50),-unitSize*50);
+  else mousePos.y += scrollY-prevScrollY;
+  parallaxPosition = max(map(scrollY,0,windowHeight/1.5,-unitSize*10,-unitSize*50),-unitSize*50);
   parallaxOffset = parallaxPosition - prevParallaxPosition;
 
   if(isMobileDevice) {
     if(frameCount % 200 == 0) ripples.push(new Ripple(width/2,heightDiv2-animator.profileImageOffset));
+    scrollY -= scrollSpeed;
+    scrollSpeed *= 0.96;
+    scrollY = constrain(scrollY,0,lowestYCoordinate-height);
+    mousePos.y = mouseY + scrollY;
+    translate(0,-scrollY);
+  } else {
+    scrollY = window.scrollY;
   }
 
-  if(window.scrollY < windowHeight) {
+  if(scrollY < windowHeight) {
     push();
-    translate(0,window.scrollY/2);
+    translate(0,scrollY/2);
     drawTetrisPattern();
 
     // Profile image and outline
@@ -102,10 +110,10 @@ function draw() {
   textAlign(CENTER,CENTER);
   textSize(unitSize*5);
   textFont(fontBold);
-  text("Contact Me", widthDiv2, height-socialsJSON.length*unitSize*6-unitSize*18);
+  text("Contact Me", widthDiv2, lowestYCoordinate-socialsJSON.length*unitSize*6-unitSize*18);
   textFont(fontRegular);
   textSize(unitSize*2.2);
-  text("No matter if it's about tech, games, or movies, let's start a chat!\nCheck out my socials below if you want to get in touch.", widthDiv2, height-socialsJSON.length*unitSize*6-unitSize*10);
+  text("No matter if it's about tech, games, or movies, let's start a chat!\nCheck out my socials below if you want to get in touch.", widthDiv2, lowestYCoordinate-socialsJSON.length*unitSize*6-unitSize*10);
   
   for(let i=0; i<cards.length; i++) {
     let card = cards[i];
@@ -116,7 +124,7 @@ function draw() {
     card.display();
 }
 
-  if(window.scrollY > height-socialLinks.length*60-windowHeight) {
+  if(scrollY > height-socialLinks.length*60-windowHeight) {
     for(let i=0; i<socialLinks.length; i++) {
       let s = socialLinks[i];
 
@@ -126,7 +134,7 @@ function draw() {
   }
   
   
-  prevScrollY = window.scrollY;
+  prevScrollY = scrollY;
   prevMousePos.x = mousePos.x;
   prevMousePos.y = mousePos.y;
   prevParallaxPosition = parallaxPosition;
@@ -134,7 +142,7 @@ function draw() {
 
 function windowResized() {
   // Change the width of the screen
-  resizeCanvas(windowWidth, height);
+  if(!isMobileDevice) resizeCanvas(windowWidth, height);
   // Reset the calculation of where the lowest point on the page is
   lowestYCoordinate = 0;
   
@@ -153,34 +161,13 @@ function windowResized() {
   setupExperienceTree();
   setupSocialLinks();
 
-  resizeCanvas(width, lowestYCoordinate);
+  if(!isMobileDevice) resizeCanvas(width, lowestYCoordinate);
 
   if (animator != null)
   animator.endStartUpAnimation();
 }
 
-// Function called once every time the mouse is pressed
-function mousePressed() {
-  // Start a new ripple animation at the cursor's current location
-  if(window.scrollY < windowHeight && !isMobileDevice) ripples.push(new Ripple(mousePos.x,mousePos.y));
-
-  if(mouseButton != LEFT) return;
-  // If the user clicks on a card that's being hovered, move to the link related to that card
-  for(let i=0; i<cards.length; i++) {
-    if(cards[i].isUnderMouse()) {
-      if (cards[i].link != "") window.location.href = cards[i].link;
-    }
-  }
-
-  for(let i=0; i<socialLinks.length; i++) {
-    if(socialLinks[i].isUnderMouse()) window.location.href = socialLinks[i].link;
-  }
-
-  for(let i=0; i<experiences.length; i++) {
-    if(experiences[i].isUnderMouse()) window.location.href = experiences[i].info['link'];
-  }
-}
-
 function distSq(x1, y1, x2, y2) {
   return (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
 }
+
