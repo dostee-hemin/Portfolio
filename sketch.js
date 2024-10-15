@@ -7,7 +7,10 @@ let prevScrollY;
 let prevParallaxPosition = 0;
 let parallaxPosition = 0;
 let scrollY = 0;
+let targetScrollY = 0;
 let scrollSpeed = 0;
+let scrollBarWidth = 0;
+let scrollBarColor = 200;
 
 let widthDiv2;
 let heightDiv2;
@@ -20,7 +23,7 @@ let mobileTetrisPieces = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  isMobileDevice = displayWidth < displayHeight;
+  isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
   windowResized();
   setupTetrisPattern();
@@ -39,14 +42,20 @@ function draw() {
 
   if(isMobileDevice) {
     if(frameCount % 200 == 0) ripples.push(new Ripple(width/2,heightDiv2-animator.profileImageOffset));
-    scrollY -= scrollSpeed;
-    scrollSpeed *= 0.96;
-    scrollY = constrain(scrollY,0,lowestYCoordinate-height);
-    mousePos.y = mouseY + scrollY;
-    translate(0,-scrollY);
-  } else {
-    scrollY = window.scrollY;
   }
+
+  if(canControlScrollBar) targetScrollY = (lowestYCoordinate-windowHeight)*mouseY/height;
+  targetScrollY -= scrollSpeed;
+  scrollSpeed *= 0.96;
+  targetScrollY = constrain(targetScrollY,0,lowestYCoordinate-height);
+  if(isMobileDevice) scrollY = targetScrollY;
+  else {
+    if(mouseX<width*0.8) canControlScrollBar = false;
+    scrollY = lerp(scrollY, targetScrollY, 0.1);
+  }
+  mousePos.y = mouseY + scrollY;
+  push();
+  translate(0,-scrollY);
 
   if(scrollY < windowHeight) {
     push();
@@ -132,6 +141,18 @@ function draw() {
       s.update();
     }
   }
+  pop();
+
+  scrollBarWidth = lerp(scrollBarWidth, (mouseX>width-unitSize*2)?unitSize*2:unitSize, 0.2);
+  let scrollBarHeight = unitSize*8;
+  let scrollBarY = map(scrollY,0,lowestYCoordinate-windowHeight,scrollBarHeight/2,height-scrollBarHeight/2);
+  stroke(70);
+  strokeWeight(scrollBarWidth);
+  line(width-unitSize/2,0,width-unitSize/2,height);
+  scrollBarColor = lerp(scrollBarColor, ((mouseX > width-unitSize*2 && abs(mouseY-scrollBarY) < scrollBarHeight/2) || canControlScrollBar)?150:220, 0.1);
+  stroke(scrollBarColor);
+  strokeWeight(scrollBarWidth*0.7);
+  line(width-unitSize/2,scrollBarY-scrollBarHeight/2,width-unitSize/2,scrollBarY+scrollBarHeight/2)
   
   
   prevScrollY = scrollY;
@@ -141,8 +162,8 @@ function draw() {
 }
 
 function windowResized() {
-  // Change the width of the screen
-  if(!isMobileDevice) resizeCanvas(windowWidth, height);
+  resizeCanvas(windowWidth, windowHeight);
+
   // Reset the calculation of where the lowest point on the page is
   lowestYCoordinate = 0;
   
@@ -160,8 +181,6 @@ function windowResized() {
   setupProjectsSection();
   setupExperienceTree();
   setupSocialLinks();
-
-  if(!isMobileDevice) resizeCanvas(width, lowestYCoordinate);
 
   if (animator != null)
   animator.endStartUpAnimation();
