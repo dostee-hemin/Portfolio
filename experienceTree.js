@@ -126,12 +126,11 @@ class Experience {
             leaf.update();
 
             // Don't show the leaf if it's off the screen
-            if(leaf.y > height) continue
+            if(leaf.y > lowestYCoordinate) continue
 
             // If a stationary leaf gets brushed by the mouse, apply the wind force and launch it
             if(leaf.isUnderMouse() && leaf.isOnBranch) leaf.launch()
 
-            if(leaf.x < 0 || leaf.x > width || leaf.y < scrollY || leaf.y > scrollY+windowHeight) continue
             leaf.display();
         }
 

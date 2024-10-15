@@ -7,6 +7,7 @@ let prevScrollY;
 let prevParallaxPosition = 0;
 let parallaxPosition = 0;
 let scrollY = 0;
+let targetScrollY = 0;
 let scrollSpeed = 0;
 
 let widthDiv2;
@@ -39,14 +40,15 @@ function draw() {
 
   if(isMobileDevice) {
     if(frameCount % 200 == 0) ripples.push(new Ripple(width/2,heightDiv2-animator.profileImageOffset));
-    scrollY -= scrollSpeed;
-    scrollSpeed *= 0.96;
-    scrollY = constrain(scrollY,0,lowestYCoordinate-height);
-    mousePos.y = mouseY + scrollY;
-    translate(0,-scrollY);
-  } else {
-    scrollY = window.scrollY;
   }
+
+  targetScrollY -= scrollSpeed;
+  scrollSpeed *= 0.96;
+  targetScrollY = constrain(targetScrollY,0,lowestYCoordinate-height);
+  if(isMobileDevice) scrollY = targetScrollY;
+  else scrollY = lerp(scrollY, targetScrollY, 0.1);
+  mousePos.y = mouseY + scrollY;
+  translate(0,-scrollY);
 
   if(scrollY < windowHeight) {
     push();
@@ -141,8 +143,6 @@ function draw() {
 }
 
 function windowResized() {
-  // Change the width of the screen
-  if(!isMobileDevice) resizeCanvas(windowWidth, height);
   // Reset the calculation of where the lowest point on the page is
   lowestYCoordinate = 0;
   
@@ -160,8 +160,6 @@ function windowResized() {
   setupProjectsSection();
   setupExperienceTree();
   setupSocialLinks();
-
-  if(!isMobileDevice) resizeCanvas(width, lowestYCoordinate);
 
   if (animator != null)
   animator.endStartUpAnimation();
