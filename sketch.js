@@ -21,7 +21,7 @@ let mobileTetrisPieces = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  isMobileDevice = displayWidth < displayHeight;
+  isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
   windowResized();
   setupTetrisPattern();
