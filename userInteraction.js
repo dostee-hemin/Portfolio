@@ -1,7 +1,11 @@
+let canControlScrollBar = false;
+
 // Function called once every time the mouse is pressed
 function mousePressed() {
   // Start a new ripple animation at the cursor's current location
   if(scrollY < windowHeight && !isMobileDevice) ripples.push(new Ripple(mousePos.x,mousePos.y));
+
+  if(mouseX>width-unitSize*2 && !canControlScrollBar) canControlScrollBar = true;
   
   if(mouseButton != LEFT) return;
   // If the user clicks on a card that's being hovered, move to the link related to that card
@@ -23,8 +27,10 @@ function mousePressed() {
 }
 
 function mouseDragged() {
+  // Desktop devices part
   if(!isMobileDevice) return;
 
+  // Mobile devices part
   targetScrollY -= mouseY-pmouseY;
   scrollSpeed = 0;
 }
@@ -37,7 +43,10 @@ function mouseWheel(event) {
 }
 
 function mouseReleased() {
-  if(!isMobileDevice) return;
+  if(!isMobileDevice) {
+    canControlScrollBar = false;
+    return;
+  }
 
   scrollSpeed = mouseY-pmouseY;
 }
