@@ -26,7 +26,6 @@ function setup() {
   isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   
   windowResized();
-  setupTetrisPattern();
 
   animator = new Animator();
   animator.startUpWebsite();
@@ -44,7 +43,6 @@ function draw() {
     if(frameCount % 200 == 0) ripples.push(new Ripple(width/2,heightDiv2-animator.profileImageOffset));
   }
 
-  if(canControlScrollBar) targetScrollY = (lowestYCoordinate-windowHeight)*mouseY/height;
   targetScrollY -= scrollSpeed;
   scrollSpeed *= 0.96;
   targetScrollY = constrain(targetScrollY,0,lowestYCoordinate-height);
@@ -65,14 +63,14 @@ function draw() {
     // Profile image and outline
     push();
     translate(widthDiv2, heightDiv2-animator.profileImageOffset)
-    scale(animator.profileImageSize);
+    scale(unitSize*25/profileImage.width * animator.profileImageSize)
     imageMode(CENTER);
     image(profileImage,0,0);
+    pop();
     noFill();
     stroke(0,0,20);
     strokeWeight(width*0.004);
-    circle(0,0, unitSize*25);
-    pop();
+    circle(widthDiv2, heightDiv2-animator.profileImageOffset, unitSize*25*animator.profileImageSize);
 
     // Title text and subtitle text
     noStroke();
@@ -143,16 +141,23 @@ function draw() {
   }
   pop();
 
-  scrollBarWidth = lerp(scrollBarWidth, (mouseX>width-unitSize*2)?unitSize*2:unitSize, 0.2);
-  let scrollBarHeight = unitSize*8;
-  let scrollBarY = map(scrollY,0,lowestYCoordinate-windowHeight,scrollBarHeight/2,height-scrollBarHeight/2);
-  stroke(70);
-  strokeWeight(scrollBarWidth);
-  line(width-unitSize/2,0,width-unitSize/2,height);
-  scrollBarColor = lerp(scrollBarColor, ((mouseX > width-unitSize*2 && abs(mouseY-scrollBarY) < scrollBarHeight/2) || canControlScrollBar)?150:220, 0.1);
-  stroke(scrollBarColor);
-  strokeWeight(scrollBarWidth*0.7);
-  line(width-unitSize/2,scrollBarY-scrollBarHeight/2,width-unitSize/2,scrollBarY+scrollBarHeight/2)
+  if(!isMobileDevice) {
+    scrollBarWidth = lerp(scrollBarWidth, (mouseX>width-unitSize*2)?unitSize*2:unitSize, 0.2);
+    let scrollBarHeight = unitSize*8;
+    let scrollBarY = map(scrollY,0,lowestYCoordinate-windowHeight,scrollBarHeight/2,height-scrollBarHeight/2);
+    stroke(70);
+    strokeWeight(scrollBarWidth);
+    line(width-unitSize/2,0,width-unitSize/2,height);
+    scrollBarColor = lerp(scrollBarColor, ((mouseX > width-unitSize*2 && abs(mouseY-scrollBarY) < scrollBarHeight/2) || canControlScrollBar)?150:220, 0.1);
+    stroke(scrollBarColor);
+    strokeWeight(scrollBarWidth*0.7);
+    line(width-unitSize/2,scrollBarY-scrollBarHeight/2,width-unitSize/2,scrollBarY+scrollBarHeight/2)
+    if(canControlScrollBar) {
+      targetScrollY = map(mouseY,scrollBarHeight/2, windowHeight-scrollBarHeight/2,0,lowestYCoordinate-windowHeight);
+      scrollY = targetScrollY;
+      scrollY = constrain(scrollY,0,lowestYCoordinate-height);
+    }
+  }
   
   
   prevScrollY = scrollY;
@@ -174,7 +179,6 @@ function windowResized() {
   largestDimension = max(width,windowHeight);
   if (isMobileDevice) unitSize = smallestDimension*0.014
   else unitSize = smallestDimension*0.011
-  profileImage.resize(unitSize*25,unitSize*25)
   
   // Setup all parts of the scene again with the new screen dimensions
   setupTetrisPattern();

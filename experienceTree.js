@@ -14,10 +14,7 @@ function setupExperienceTree() {
             visibility = (i%2 == 0)?-1:1;
         }
         if(frameCount == 0) experiences.push(new Experience(x,y,visibility,experiencesJSON[i]));
-        else {
-           
-            experiences[i].setResolutionValues(x,y);
-        }
+        else experiences[i].setResolutionValues(x,y);
     }
 
     lowestYCoordinate += experiencesJSON.length*unitSize*(isMobileDevice?65:45)+unitSize*140;
@@ -31,6 +28,7 @@ function drawExperienceTree() {
     gradient.addColorStop(0.6, color(15,10,20));
     gradient.addColorStop(1, color(0,5,5));
     ctx.fillStyle = gradient;
+    noStroke();
     rect(0,topMostY,width,topMostY+experiencesJSON.length*unitSize*(isMobileDevice?65:45) + unitSize*130);
 
     textFont(fontBold);
