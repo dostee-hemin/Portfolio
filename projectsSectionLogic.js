@@ -15,7 +15,7 @@ function setupProjectsSection() {
     triangleHeight = unitSize*25;
 
     cards = [];
-    categoryBaseHeight = cardSize * 1.3;
+    categoryBaseHeight = cardSize * (isMobileDevice?2.3:1.3);
     numColumns = int(width*0.8/cardSize);
     let currentY = windowHeight+triangleHeight+parallaxPosition;
     for(let category=0; category<categories.length; category++) {
@@ -24,21 +24,20 @@ function setupProjectsSection() {
 
             let x = (width-unitSize*12)/numColumns * (project%numColumns+0.5) + unitSize*6;
             if (category%2 != 0) {x = width - x;}
-            let y = currentY+(int(project/numColumns)+0.5) * (isMobileDevice?1.7:1)*categoryBaseHeight;
+            let y = currentY+(int(project/numColumns)) * categoryBaseHeight + triangleHeight*1.2;
 
             cards.push(new ProjectCard(x, y, currentProject));
         }
-        currentY += ceil(categories[category].projects.length/numColumns) * (isMobileDevice?1.8:1)*categoryBaseHeight + triangleHeight;
+        currentY += ceil(categories[category].projects.length/numColumns) * categoryBaseHeight + triangleHeight;
     }
-
-    lowestYCoordinate = currentY-parallaxPosition-unitSize*50;
+    lowestYCoordinate = currentY-triangleHeight*2-parallaxPosition;
 }
 
 function drawProjectsSection() {
     // Variable that starts at the bottom of the screen and goes lower with each category
     let startingY = windowHeight;
     for(let i=0; i<categories.length; i++) {
-        let categoryHeight = ceil(categories[i].projects.length/numColumns) * (isMobileDevice?1.8:1)*categoryBaseHeight;
+        let categoryHeight = ceil(categories[i].projects.length/numColumns) * categoryBaseHeight;
         
         push();
         translate(i%2 == 0? 0 : width, startingY);
@@ -49,8 +48,8 @@ function drawProjectsSection() {
         fill(3,map(i,0,categories.length,20,70),map(i,0,categories.length,50,120));
         noStroke();
         beginShape();
-        vertex(0,-unitSize*0.2)
-        vertex(width,triangleHeight-unitSize*0.2)
+        vertex(0,0)
+        vertex(width,triangleHeight)
         vertex(width,triangleHeight+categoryHeight)
         vertex(0,triangleHeight*2+categoryHeight)
         endShape(CLOSE);
@@ -87,5 +86,5 @@ function drawShadow(gradientHeight) {
     noStroke();
     rectMode(CENTER);
     rotate(atan(gradientHeight/width));
-    rect(0,0,width+unitSize*10,gradientHeight);
+    rect(0,0,width*1.4,gradientHeight);
 }
