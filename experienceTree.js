@@ -317,15 +317,6 @@ class Experience {
     }
 
     makeBranch(len, branchAngle, x, y){
-        // Add leaves only when the length of branch is short enough (i.e. close to the edge of the tree)
-        if (len < unitSize*3) {
-            if(this.isNewLeaves) this.leaves.unshift(new Leaf(x+this.x, -y+this.y))
-            else {
-                this.leaves[this.leafIndex].setPositionAndThickness(x+this.x, -y+this.y)
-                this.leafIndex += 1
-            }
-        }
-
         // If the branch length gets too short, leave the function
         if (len < unitSize) return;
         
@@ -344,6 +335,15 @@ class Experience {
     
         // Add branch to the list of branches, including the start and end points and the branch thickness
         this.branchPoints.push([x,-y,x2,-y2,len/this.branchLength * unitSize*0.7]);
+
+        // Add leaves only when the length of branch is short enough (i.e. close to the edge of the tree)
+        if (len < this.branchLength*0.4) {
+            if(this.isNewLeaves) this.leaves.unshift(new Leaf(x2+this.x, -y2+this.y))
+            else {
+                this.leaves[this.leafIndex].setPositionAndThickness(x2+this.x, -y2+this.y)
+                this.leafIndex += 1
+            }
+        }
         
         // Shorten the length of the branch and draw the one to the left and to the right
         const newLen = len * 0.7;
