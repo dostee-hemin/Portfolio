@@ -11,7 +11,7 @@
             },
             {
                 "name":"Language Lesson Generator",
-                "description":"An LLM-based script generater for a language-learning audio course that utilizes teaching best practices and approaches to create personalized and varied lessons.",
+                "description":"An LLM-based script generator for a language-learning audio course that utilizes teaching best practices and approaches to create personalized and varied lessons.",
                 "tools":["Claude 3.5 Sonnet API", "Google Colab", "Python"],
                 "link":"",
                 "image_name":""
